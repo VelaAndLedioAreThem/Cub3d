@@ -6,7 +6,7 @@
 /*   By: ledio <ledio@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 21:49:14 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/10 21:56:45 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/10 22:08:50 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "../gnl/include/get_next_line.h"
 
 typedef struct s_list
 {
@@ -50,11 +51,9 @@ int								ft_strncmp(const char *str1,
 char							*ft_strnstr(const char *str,
 									const char *subs, size_t len);
 int								ft_atoi(const char *str);
-char							*ft_strdup(const char *s);
 void							*ft_calloc(size_t count, size_t size);
 char							*ft_substr(char const *s,
 									unsigned int start, size_t len);
-char							*ft_strjoin(char const *s1, char const *s2);
 char							*ft_strtrim(char const *s1, char const *set);
 char							**ft_split(char const *s, char c);
 char							*ft_itoa(int n);

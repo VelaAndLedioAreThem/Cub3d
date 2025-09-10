@@ -3,35 +3,46 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ledio <ledio@student.42.fr>                +#+  +:+       +#+         #
+#    By: ldurmish <ldurmish@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/19 12:20:49 by ldurmish          #+#    #+#              #
-#    Updated: 2025/09/10 21:33:34 by ldurmish         ###   ########.fr        #
+#    Updated: 2025/09/10 22:11:37 by ldurmish         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# Name of the files
 NAME = libft.a
 
+# Compiler settings
 CC = cc
+CFLAGS = -Wall -Wextra -Werror -I include/ -I gnl/include/
 
-CFLAGS = -Wall -Wextra -Werror -I include
+# Directories
+GNL_DIR = gnl/src/
 
-SRCS = src/ft_bzero.c src/ft_calloc.c src/ft_isalnum.c \
-		src/ft_isalpha.c src/ft_isascii.c src/ft_isdigit.c src/ft_isprint.c \
-		src/ft_itoa.c src/ft_memchr.c src/ft_memcmp.c \
-		src/ft_memcpy.c src/ft_memmove.c src/ft_memset.c src/ft_putchar_fd.c \
-		src/ft_putendl_fd.c src/ft_putnbr_fd.c src/ft_putstr_fd.c src/ft_split.c \
-		src/ft_strchr.c src/ft_strdup.c src/ft_striteri.c src/ft_strjoin.c \
-		src/ft_strlcat.c src/ft_strlcpy.c src/ft_strlen.c src/ft_strmapi.c \
-		src/ft_strncmp.c src/ft_strnstr.c src/ft_strrchr.c src/ft_strtrim.c \
-		src/ft_substr.c src/ft_tolower.c src/ft_toupper.c src/ft_atoi.c\
+# Source files
+SRCS = $(LIBFT_DIR)ft_bzero.c $(LIBFT_DIR)ft_calloc.c $(LIBFT_DIR)ft_isalnum.c \
+		$(LIBFT_DIR)ft_isalpha.c $(LIBFT_DIR)ft_isascii.c $(LIBFT_DIR)ft_isdigit.c \
+		$(LIBFT_DIR)ft_isprint.c $(LIBFT_DIR)ft_itoa.c $(LIBFT_DIR)ft_memchr.c \
+		$(LIBFT_DIR)ft_memcmp.c $(LIBFT_DIR)ft_memcpy.c $(LIBFT_DIR)ft_memmove.c \
+		$(LIBFT_DIR)ft_memset.c $(LIBFT_DIR)ft_putchar_fd.c $(LIBFT_DIR)ft_putendl_fd.c \
+		$(LIBFT_DIR)ft_putnbr_fd.c $(LIBFT_DIR)ft_putstr_fd.c $(LIBFT_DIR)ft_split.c \
+		$(LIBFT_DIR)ft_strchr.c $(LIBFT_DIR)ft_strdup.c $(LIBFT_DIR)ft_striteri.c \
+		$(LIBFT_DIR)ft_strjoin.c $(LIBFT_DIR)ft_strlcat.c $(LIBFT_DIR)ft_strlcpy.c \
+		$(LIBFT_DIR)ft_strlen.c $(LIBFT_DIR)ft_strmapi.c $(LIBFT_DIR)ft_strncmp.c \
+		$(LIBFT_DIR)ft_strnstr.c $(LIBFT_DIR)ft_strrchr.c $(LIBFT_DIR)ft_strtrim.c \
+		$(LIBFT_DIR)ft_substr.c $(LIBFT_DIR)ft_tolower.c $(LIBFT_DIR)ft_toupper.c \
+		$(LIBFT_DIR)ft_atoi.c $(GNL_DIR)get_next_line.c $(GNL_DIR)get_next_line_utils.c \
 
 
+# Object files
 OBJS = $(SRCS:.c=.o)
 
-HEADERS = include/libft.h
+# Headers
+HEADERS = include/libft.hgnl/include/get_next_line.h
 
-all: $(NAME)
+# Main target
+all: $(NAME) $(PRINTF_NAME)
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
@@ -39,16 +50,12 @@ $(NAME): $(OBJS)
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-
 clean:
-	rm -f $(OBJS) $(BONUS_OBJS)
-
+	rm -f $(OBJS) $(BONUS_OBJS) $(PRINTF_OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(BONUS_NAME)
-
+	rm -f $(NAME) $(BONUS_NAME) $(PRINTF_NAME)
 
 re: fclean all clean
 
-
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
