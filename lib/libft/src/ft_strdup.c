@@ -6,7 +6,7 @@
 /*   By: ldurmish <ldurmish@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 00:10:24 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/01/13 19:54:28 by ldurmish         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:38:08 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ char	*ft_strdup(const char *s)
 	int			len;
 	char		*result;
 
-	if (s == NULL)
-		return (NULL);
 	len = ft_strlen(s);
 	result = ((char *)malloc(sizeof(char) * (len + 1)));
 	if (result == NULL)

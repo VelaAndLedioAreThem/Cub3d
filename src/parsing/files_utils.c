@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   files_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 16:21:37 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/10 20:11:03 by ldurmish         ###   ########.fr       */
+/*   Created: 2025/09/10 20:45:53 by ldurmish          #+#    #+#             */
+/*   Updated: 2025/09/10 21:56:13 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
-#include "../include/parsing.h"
+#include "../../include/parsing.h"
 
-int	main(int ac, char **av)
+char	**read_all_line(int fd, int *output)
 {
-	t_config	cfg;
+	char	**arr;
+	char	*line;
+	int		space;
+	int		n;
 
-	init_configs(&cfg);
-	if (ac != 2)
-		return (perr(P_EARG, "Usage: ./cub3d <file.cub>"));
-	if (parse_config(av[1], &cfg) != 0)
-		return (destroy_configs(&cfg), 1);
+	space = 32;
+	n = 0;
+	arr = (char **)malloc(sizeof(char *) * space);
+	if (!arr)
+		return (NULL);
+	line = get_next_line(fd);
 }

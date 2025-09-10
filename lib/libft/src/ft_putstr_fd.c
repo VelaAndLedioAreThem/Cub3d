@@ -6,7 +6,7 @@
 /*   By: ldurmish <ldurmish@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 18:39:42 by ldurmish          #+#    #+#             */
-/*   Updated: 2024/06/18 20:37:55 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/10 21:54:02 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
  * Return: None.
  */
 
-#include "libft.h"
+#include "../include/libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
 	if (!s || !fd)
 		return ;

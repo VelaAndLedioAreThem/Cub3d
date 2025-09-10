@@ -1,9 +1,9 @@
-# ----------------------
+# ---------------------
 #  Project settings
 #  --------------------
 NAME = cub3d
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude -Ilib/libft -Ilib/mlx
+CFLAGS = -Wall -Wextra -Werror -Iinclude -Ilib/libft/include -Ilib/mlx -Ilib/libft/gnl/include
 
 # ----------------
 #  Directories
@@ -20,7 +20,10 @@ MLX_DIR = lib/mlx
 #  -------------
 SRCS = \
 	   $(SCR_DIR)/main.c \
-OBJS = $(SRCS:c=.o)
+	   $(PARSING_DIR)/init_config.c $(PARSING_DIR)/parse_config.c $(PARSING_DIR)/errors.c \
+	   $(PARSING_DIR)/files_utils.c \
+
+OBJS = $(SRCS:.c=.o)
 
 # -------------
 #  Libraries
@@ -39,6 +42,10 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
+# Compile  C -> OBJ
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
@@ -47,12 +54,12 @@ $(MLX):
 
 clean:
 	rm -f $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(MLX_DIR) clean
+	-$(MAKE) -C $(LIBFT_DIR) clean
+	-$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	-$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
