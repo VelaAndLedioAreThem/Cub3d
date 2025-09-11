@@ -27,7 +27,7 @@ typedef struct s_list_gnl
 {
 	char			*data;
 	int				len;
-	struct s_list	*next;
+	struct s_list_gnl	*next;
 	int				to_delete;
 	int				found_newline;
 }				t_list_gnl;

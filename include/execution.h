@@ -1,0 +1,156 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vszpiech <vszpiech@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
+/*   Updated: 2025/09/11 16:37:16 by vszpiech           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef EXECUTION_H
+# define EXECUTION_H
+
+# include "cub3d.h"
+# include <math.h>
+
+/* Temporary MLX function declarations for compilation */
+void	*mlx_init();
+void	*mlx_new_window(void *mlx_ptr, int size_x, int size_y, char *title);
+void	*mlx_new_image(void *mlx_ptr, int width, int height);
+char	*mlx_get_data_addr(void *img_ptr, int *bits_per_pixel, int *size_line, int *endian);
+int		mlx_put_image_to_window(void *mlx_ptr, void *win_ptr, void *img_ptr, int x, int y);
+void	*mlx_xpm_file_to_image(void *mlx_ptr, char *filename, int *width, int *height);
+int		mlx_loop(void *mlx_ptr);
+int		mlx_hook(void *win_ptr, int x_event, int x_mask, int (*funct)(), void *param);
+int		mlx_loop_hook(void *mlx_ptr, int (*funct)(), void *param);
+int		mlx_destroy_image(void *mlx_ptr, void *img_ptr);
+int		mlx_destroy_window(void *mlx_ptr, void *win_ptr);
+int		mlx_destroy_display(void *mlx_ptr);
+
+/* ---- Screen and rendering constants ---- */
+# define SCREEN_WIDTH 1920
+# define SCREEN_HEIGHT 1080
+# define TILE_SIZE 64
+
+/* ---- Math constants ---- */
+# define PI 3.14159265359
+# define TWO_PI 6.28318530718
+# define FOV_ANGLE (60 * (PI / 180))
+
+/* ---- Ray configuration ---- */
+# define NUM_RAYS SCREEN_WIDTH
+# define WALL_STRIP_WIDTH 1
+
+/* ---- Movement constants ---- */
+# define MOVE_SPEED 3.0
+# define ROTATION_SPEED 3.0
+
+/* ---- Key codes ---- */
+# define KEY_ESC 65307
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+
+/* ---- Ray structure ---- */
+typedef struct s_ray
+{
+	double	angle;
+	double	wall_hit_x;
+	double	wall_hit_y;
+	double	distance;
+	int		was_hit_vertical;
+	int		is_ray_facing_up;
+	int		is_ray_facing_down;
+	int		is_ray_facing_left;
+	int		is_ray_facing_right;
+	int		hit_content;
+}	t_ray;
+
+/* ---- Texture structure ---- */
+typedef struct s_texture
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
+}	t_texture;
+
+/* ---- Game execution structure ---- */
+typedef struct s_game
+{
+	void		*mlx;
+	void		*window;
+	void		*img;
+	char		*img_addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	
+	t_config	*config;
+	t_ray		rays[NUM_RAYS];
+	
+	t_texture	textures[TEX_COUNT];
+	
+	int			game_running;
+	int			frame_count;
+	
+	int			turn_direction;
+	int			walk_direction;
+	int			side_direction;
+	/* Continuous viewing angle in radians (0..2*PI) */
+	double			player_angle;
+}	t_game;
+
+/* ---- Main execution functions ---- */
+int		game_loop(void *param);
+void	update_game(t_game *game);
+void	render_game(t_game *game);
+void	init_game(t_game *game, t_config *config);
+void	setup_hooks(t_game *game);
+
+/* ---- Player functions ---- */
+void	init_player_from_config(t_config *config);
+void	update_player(t_game *game);
+
+/* ---- Raycasting functions ---- */
+void	cast_all_rays(t_game *game);
+void	cast_ray(t_game *game, double ray_angle, int strip_id);
+double	normalize_angle(double angle);
+double	distance_between_points(double x1, double y1, double x2, double y2);
+
+/* ---- Rendering functions ---- */
+void	render_background(t_game *game);
+void	render_walls(t_game *game);
+void	render_wall_strip(t_game *game, int strip_id);
+
+/* ---- Texture functions ---- */
+void	load_textures(t_game *game);
+int		get_texture_color(t_texture *texture, int x, int y);
+
+/* ---- Utility functions ---- */
+int		is_wall(t_game *game, double x, double y);
+int		has_wall_at(t_game *game, double x, double y);
+void	put_pixel(t_game *game, int x, int y, int color);
+int		create_rgb(int r, int g, int b);
+
+/* ---- Input handling ---- */
+int		handle_keypress(int keycode, t_game *game);
+int		handle_keyrelease(int keycode, t_game *game);
+
+/* ---- Cleanup ---- */
+int		cleanup_and_exit(t_game *game);
+void	free_game_data(t_game *game);
+
+/* ---- Test functions ---- */
+void	create_test_config(t_config *config);
+
+#endif
