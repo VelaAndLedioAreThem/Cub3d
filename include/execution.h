@@ -29,6 +29,11 @@ int		mlx_loop_hook(void *mlx_ptr, int (*funct)(), void *param);
 int		mlx_destroy_image(void *mlx_ptr, void *img_ptr);
 int		mlx_destroy_window(void *mlx_ptr, void *win_ptr);
 int		mlx_destroy_display(void *mlx_ptr);
+/* Optional mouse helpers if available in your MLX build */
+int		mlx_mouse_get_pos(void *mlx_ptr, void *win_ptr, int *x, int *y);
+int		mlx_mouse_move(void *mlx_ptr, void *win_ptr, int x, int y);
+int		mlx_mouse_hide(void *mlx_ptr, void *win_ptr);
+int		mlx_mouse_show(void *mlx_ptr, void *win_ptr);
 
 /* ---- Screen and rendering constants ---- */
 # define SCREEN_WIDTH 1920
@@ -47,6 +52,10 @@ int		mlx_destroy_display(void *mlx_ptr);
 /* ---- Movement constants ---- */
 # define MOVE_SPEED 3.0
 # define ROTATION_SPEED 3.0
+/* Mouse look sensitivity in radians per pixel */
+# define MOUSE_SENSITIVITY 0.003
+/* Mouse pitch sensitivity in pixels per mouse pixel */
+# define MOUSE_PITCH_SENSITIVITY 0.002
 
 /* ---- Key codes ---- */
 # define KEY_ESC 65307
@@ -56,6 +65,9 @@ int		mlx_destroy_display(void *mlx_ptr);
 # define KEY_D 100
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+# define KEY_UP 65362
+# define KEY_DOWN 65364
+# define KEY_M 109
 
 /* ---- Ray structure ---- */
 typedef struct s_ray
@@ -108,6 +120,14 @@ typedef struct s_game
 	int			side_direction;
 	/* Continuous viewing angle in radians (0..2*PI) */
 	double			player_angle;
+
+	/* ---- Mouse look state ---- */
+	int			mouse_look_enabled; /* 1 = on, 0 = off */
+	int			last_mouse_x;       /* previous x to compute delta */
+	int			last_mouse_y;       /* previous y (unused for yaw) */
+	double			mouse_sensitivity; /* radians per pixel */
+	double			mouse_pitch_sensitivity; /* pixels per mouse pixel */
+	double			camera_pitch_pixels; /* vertical shift of horizon/walls */
 }	t_game;
 
 /* ---- Main execution functions ---- */
@@ -120,6 +140,7 @@ void	setup_hooks(t_game *game);
 /* ---- Player functions ---- */
 void	init_player_from_config(t_config *config);
 void	update_player(t_game *game);
+int		handle_mousemove(int x, int y, t_game *game);
 
 /* ---- Raycasting functions ---- */
 void	cast_all_rays(t_game *game);

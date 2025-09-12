@@ -146,11 +146,36 @@ void	cast_ray(t_game *game, double ray_angle, int strip_id)
 {
 	t_ray	horizontal_ray, vertical_ray;
 	double	horizontal_distance, vertical_distance;
+	int		is_ray_facing_down;
+	int		is_ray_facing_up;
+	int		is_ray_facing_right;
+	int		is_ray_facing_left;
 	
 	ray_angle = normalize_angle(ray_angle);
 	
 	horizontal_ray.angle = ray_angle;
 	vertical_ray.angle = ray_angle;
+
+	/*
+	** Initialize all direction flags here so both horizontal/vertical
+	** DDA steppers use consistent, valid signs for x/y steps. Previously
+	** each caster relied on flags it didn’t set (uninitialized), which
+	** caused jittering/shifting walls.
+	*/
+	is_ray_facing_down = (ray_angle > 0 && ray_angle < PI);
+	is_ray_facing_up = !is_ray_facing_down;
+	is_ray_facing_right = (ray_angle < PI / 2 || ray_angle > 3 * PI / 2);
+	is_ray_facing_left = !is_ray_facing_right;
+
+	horizontal_ray.is_ray_facing_down = is_ray_facing_down;
+	horizontal_ray.is_ray_facing_up = is_ray_facing_up;
+	horizontal_ray.is_ray_facing_right = is_ray_facing_right;
+	horizontal_ray.is_ray_facing_left = is_ray_facing_left;
+
+	vertical_ray.is_ray_facing_down = is_ray_facing_down;
+	vertical_ray.is_ray_facing_up = is_ray_facing_up;
+	vertical_ray.is_ray_facing_right = is_ray_facing_right;
+	vertical_ray.is_ray_facing_left = is_ray_facing_left;
 	
 	cast_horizontal_ray(game, ray_angle, &horizontal_ray);
 	horizontal_distance = horizontal_ray.distance;

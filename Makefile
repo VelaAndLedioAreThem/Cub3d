@@ -6,6 +6,9 @@ TEST_NAME = cub3d_test
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude -Ilib/libft/include -Ilib/mlx -Ilib/libft/gnl/include
 
+# Minimal, readable build output
+.SILENT:
+
 # ----------------
 #  Directories
 #  --------------
@@ -48,33 +51,44 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 #  Rules
 #  ---------
 all: $(NAME)
+	printf "DONE\n"
 
 test: $(TEST_NAME)
+	printf "DONE (test)\n"
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
+	printf "LD  %s\n" "$(NAME)"
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+	printf "OK  %s\n" "$(NAME)"
 
 $(TEST_NAME): $(TEST_OBJS) $(LIBFT) $(MLX)
+	printf "LD  %s\n" "$(TEST_NAME)"
 	$(CC) $(CFLAGS) $(TEST_OBJS) $(LIBFT) $(MLX_FLAGS) -o $(TEST_NAME)
+	printf "OK  %s\n" "$(TEST_NAME)"
 
 # Compile  C -> OBJ
 %.o: %.c
+	printf "CC  %s\n" "$<"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	printf "LIB %s\n" "libft"
+	$(MAKE) -s -C $(LIBFT_DIR)
 
 $(MLX):
-	$(MAKE) -C $(MLX_DIR)
+	printf "LIB %s\n" "mlx"
+	$(MAKE) -s -C $(MLX_DIR)
 
 clean:
+	printf "CLEAN objects\n"
 	rm -f $(OBJS) $(TEST_OBJS)
-	-$(MAKE) -C $(LIBFT_DIR) clean
-	-$(MAKE) -C $(MLX_DIR) clean
+	-$(MAKE) -s -C $(LIBFT_DIR) clean
+	-$(MAKE) -s -C $(MLX_DIR) clean
 
 fclean: clean
+	printf "CLEAN binaries\n"
 	rm -f $(NAME) $(TEST_NAME)
-	-$(MAKE) -C $(LIBFT_DIR) fclean
+	-$(MAKE) -s -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

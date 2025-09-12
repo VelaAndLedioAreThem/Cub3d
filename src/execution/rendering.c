@@ -19,8 +19,17 @@
 
 void	render_background(t_game *game)
 {
-	int	x, y;
-	int	ceiling_height = SCREEN_HEIGHT / 2;
+    int	x, y;
+    int	ceiling_height;
+
+    /* Dynamic horizon based on camera pitch */
+    ceiling_height = SCREEN_HEIGHT / 2 + (int)(game->camera_pitch_pixels);
+    if (ceiling_height < 0) {
+        ceiling_height = 0;
+    }
+    if (ceiling_height > SCREEN_HEIGHT) {
+        ceiling_height = SCREEN_HEIGHT;
+    }
 	
 	for (y = 0; y < ceiling_height; y++)
 	{
@@ -30,13 +39,13 @@ void	render_background(t_game *game)
 		}
 	}
 	
-	for (y = ceiling_height; y < SCREEN_HEIGHT; y++)
-	{
-		for (x = 0; x < SCREEN_WIDTH; x++)
-		{
-			put_pixel(game, x, y, game->config->floor.value);
-		}
-	}
+    for (y = ceiling_height; y < SCREEN_HEIGHT; y++)
+    {
+        for (x = 0; x < SCREEN_WIDTH; x++)
+        {
+            put_pixel(game, x, y, game->config->floor.value);
+        }
+    }
 }
 
 int	get_texture_color(t_texture *texture, int x, int y)
@@ -112,8 +121,11 @@ void	render_wall_strip(t_game *game, int strip_id)
 	distance = distance * cos(ray->angle - game->player_angle);
 	
 	wall_height = calculate_wall_height(distance);
-	wall_top_pixel = (SCREEN_HEIGHT / 2) - (wall_height / 2);
-	wall_bottom_pixel = (SCREEN_HEIGHT / 2) + (wall_height / 2);
+    wall_top_pixel = (SCREEN_HEIGHT / 2) - (wall_height / 2);
+    wall_bottom_pixel = (SCREEN_HEIGHT / 2) + (wall_height / 2);
+    /* Apply camera pitch (positive shifts walls down) */
+    wall_top_pixel += (int)(game->camera_pitch_pixels);
+    wall_bottom_pixel += (int)(game->camera_pitch_pixels);
 	
 	if (wall_top_pixel < 0)
 		wall_top_pixel = 0;
