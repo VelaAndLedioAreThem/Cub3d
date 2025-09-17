@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:25:32 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/10 21:17:35 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/17 21:34:00 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	parse_config(const char *path, t_config *out)
 {
 	char	**lines;
 	int		n;
-	int		ret;
+	int		consumed;
 
 	if (!path || !out)
 		return (perr(P_EARG, "Usage ./cub3d <file.cub>"));
@@ -59,6 +59,14 @@ int	parse_config(const char *path, t_config *out)
 	lines = load_files(path, &n);
 	if (!lines)
 		return (1);
-	ret = 0;
-	return (ret);
+	consumed = 0;
+	if (parse_identifiers(lines, n, &consumed, out) != 0)
+		return (free_lines(lines, n), 1);
+	if (parse_map(lines + consumed, n - consumed, &out->map, &out->player) != 0)
+		return (free_lines(lines, n), 1);
+	if (validate_not_empty_map(&out->map) != 0
+		|| validate_map_closed(&out->map) != 0)
+		return (free_lines(lines, n), 1);
+	free_lines(lines, n);
+	return (0);
 }
