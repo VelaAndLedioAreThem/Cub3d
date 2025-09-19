@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:06:45 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/16 23:46:34 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/19 23:03:43 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	read_num_0_255(const char **str, int *color)
 	skip_ws(&p);
 	val = 0;
 	has_digit = 0;
-	while (*p && ft_isdigit(*p))
+	while (*p && ft_isdigit((unsigned char)*p))
 	{
-		has_digit = 0;
+		has_digit = 1;
 		val = val * 10 + (*p - '0');
-		if (val > 255)
+		if (val < 0 || val > 255)
 			return (perr(P_EFMT, "color out of range"));
 		p++;
 	}
@@ -55,7 +55,7 @@ static int	expect_comma(const char **str)
 	s = *str;
 	skip_ws(&s);
 	if (*s != ',')
-		return (perr(P_EFMT, "expect comma"));
+		return (perr(P_EFMT, "expected comma"));
 	s++;
 	skip_ws(&s);
 	*str = s;
@@ -79,6 +79,7 @@ int	parse_rgb_triplet(const char *s, int *r, int *g, int *b)
 		return (1);
 	if (read_num_0_255(&p, b) != 0)
 		return (1);
+	skip_ws(&p);
 	if (*p != '\0' && *p != '\n' && *p != '\r')
 		return (perr(P_EFMT, "trailing characters after color"));
 	return (0);

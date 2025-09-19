@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:04:26 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/10 21:32:57 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:13:17 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	int		x;
-	int		y;
-	char	dir;
+	double		x;
+	double		y;
+	char		dir;
 }	t_player;
 
 typedef struct s_config

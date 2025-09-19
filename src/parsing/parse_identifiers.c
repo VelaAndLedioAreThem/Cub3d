@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:31:10 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/17 21:24:42 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/19 22:58:20 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,15 @@ static int	id_try_textures(t_identifiers *p, t_config *cfg)
 	while (++i < 4)
 	{
 		r = keyreset(p->s, keys[i]);
-		if (r)
-		{
-			if (p->seen[i])
-				return (perr(P_EDUP, dups[i]));
-			p->seen[i] = 1;
-			rc = parse_textures(r, i, cfg);
-			if (rc != 0)
-				return (rc);
-			return (1);
-		}
-		i++;
+		if (!r)
+			continue ;
+		if (p->seen[i])
+			return (perr(P_EDUP, dups[i]));
+		p->seen[i] = 1;
+		rc = parse_textures(r, i, cfg);
+		if (rc != 0)
+			return (rc);
+		return (1);
 	}
 	return (0);
 }
@@ -72,7 +70,7 @@ int	id_proccess_line(t_identifiers *p, int i, int *consumed, t_config *cfg)
 
 	pre = id_precheck(p->s, i, consumed);
 	if (pre == 1)
-		return (1);
+		return (*consumed = i + i, 1);
 	if (pre == 2)
 		return (2);
 	p->rc = id_try_textures(p, cfg);

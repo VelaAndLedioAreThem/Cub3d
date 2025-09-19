@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:22:41 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/17 21:13:23 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/19 22:20:22 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,23 @@ typedef struct s_identifiers
 	int			rc;
 }	t_identifiers;
 
+typedef struct s_parse_map
+{
+	int		start;
+	int		end;
+	int		player_count;
+}	t_parse_map;
+
+typedef struct s_row_map
+{
+	const char		*src;
+	char			*dst;
+	int				width;
+	int				y;
+	t_player		*player;
+	int				*pc;
+}	t_row_map;
+
 int			parse_config(const char *path, t_config *out);
 int			perr(t_perr code, const char *msg);
 char		**read_all_line(int fd, int *output);
@@ -52,4 +69,11 @@ int			id_precheck(const char *s, int i, int *consumed);
 int			parse_textures(const char *r, int which, t_config *cfg);
 int			parse_color(const char *s, t_color *dst);
 int			id_try_ceil(t_identifiers *p, t_config *cfg);
+int			parse_map(char **lines, int n, t_map *map, t_player *player);
+int			is_blank_line(const char *s);
+size_t		rtrim_len(const char *s);
+int			check_player_count(int pc);
+int			fill_row_chars(t_row_map *row);
+int			validate_map_closed(t_map *map);
+int			validate_not_empty_map(t_map *map);
 #endif

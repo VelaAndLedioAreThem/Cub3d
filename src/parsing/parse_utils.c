@@ -6,20 +6,11 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:13:38 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/16 18:15:21 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/19 23:07:23 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
-
-const char	*skip_sapces(const char *s)
-{
-	if (!s)
-		return (NULL);
-	while (*s == ' ' || *s == '\t')
-		s++;
-	return (s);
-}
 
 int	is_blank(const char *s)
 {
@@ -53,34 +44,36 @@ int	looks_like_map_line(const char *s)
 {
 	int		has_cell;
 
+	s = skip_spaces(s);
 	if (!s || *s == '\0')
 		return (0);
-	has_cell = 0;
 	while (*s)
 	{
-		if (*s == CH_WALL || *s == CH_SPACE || *s == CH_N
-			|| *s == CH_W || *s == CH_S || *s == CH_E)
-			has_cell = 1;
-		else if (*s != CH_VOID && *s != '\t')
+		if (!(*s == CH_WALL || *s == CH_SPACE || *s == CH_N
+				|| *s == CH_W || *s == CH_S || *s == CH_E))
 			return (0);
+		if (*s != CH_VOID && *s != '\t')
+			has_cell = 1;
 		s++;
 	}
-	return (1);
+	return (has_cell);
 }
 
 const char	*keyreset(const char *s, const char *key)
 {
 	size_t		i;
+	const char	*p;
 
-	if (!s || !key)
+	p = skip_spaces(s);
+	if (!p || !key)
 		return (NULL);
 	i = 0;
-	while (key[i] && s[i] && key[i] == s[i])
+	while (key[i] && key[i] == p[i])
 		i++;
 	if (key[i] != '\0')
 		return (NULL);
-	s += i;
-	while (*s == ' ' || *s == '\t')
-		s++;
-	return (s);
+	p += i;
+	while (*p == ' ' || *p == '\t')
+		p++;
+	return (p);
 }
