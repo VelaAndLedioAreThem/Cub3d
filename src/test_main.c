@@ -26,7 +26,7 @@ int	main(void)
 	create_test_config(&cfg);
 	
 	printf("   Map size: %dx%d\n", cfg.map.width, cfg.map.height);
-	printf("   Player position: (%d, %d) facing %c\n", 
+	printf("   Player position: (%.1f, %.1f) facing %c\n",
 		cfg.player.x, cfg.player.y, cfg.player.dir);
 	printf("   Floor color: RGB(%d, %d, %d)\n", 
 		cfg.floor.r, cfg.floor.g, cfg.floor.b);
