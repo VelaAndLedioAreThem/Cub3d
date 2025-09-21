@@ -14,101 +14,66 @@
 
 int	handle_keypress(int keycode, t_game *game)
 {
-	if (keycode == KEY_W || keycode == KEY_UP)
-		game->walk_direction = 1;
-	else if (keycode == KEY_S || keycode == KEY_DOWN)
-		game->walk_direction = -1;
+	if (keycode == KEY_W)
+		game->input.w = 1;
+	else if (keycode == KEY_S)
+		game->input.s = 1;
 	else if (keycode == KEY_A)
-		game->side_direction = -1;
+		game->input.a = 1;
 	else if (keycode == KEY_D)
-		game->side_direction = 1;
+		game->input.d = 1;
 	else if (keycode == KEY_LEFT)
-		game->turn_direction = -1;
+		game->input.left = 1;
 	else if (keycode == KEY_RIGHT)
-		game->turn_direction = 1;
+		game->input.right = 1;
 	else if (keycode == KEY_ESC)
 		cleanup_and_exit(game);
-	else if (keycode == KEY_M)
-	{
-		game->mouse_look_enabled = !game->mouse_look_enabled;
-		/* Reset last reference so we don't jump when re-enabling */
-		game->last_mouse_x = -1;
-		game->last_mouse_y = -1;
-		if (game->mouse_look_enabled)
-			mlx_mouse_hide(game->mlx, game->window);
-		else
-			mlx_mouse_show(game->mlx, game->window);
-	}
-	
+
+	/* Recompute aggregate directions from per-key state */
+	game->walk_direction = (game->input.w ? 1 : 0) + (game->input.s ? -1 : 0);
+	if (game->walk_direction > 1) game->walk_direction = 1;
+	if (game->walk_direction < -1) game->walk_direction = -1;
+
+	game->side_direction = (game->input.d ? 1 : 0) + (game->input.a ? -1 : 0);
+	if (game->side_direction > 1) game->side_direction = 1;
+	if (game->side_direction < -1) game->side_direction = -1;
+
+	game->turn_direction = (game->input.right ? 1 : 0) + (game->input.left ? -1 : 0);
+	if (game->turn_direction > 1) game->turn_direction = 1;
+	if (game->turn_direction < -1) game->turn_direction = -1;
+
 	return (0);
 }
 
 int	handle_keyrelease(int keycode, t_game *game)
 {
-	if (keycode == KEY_W || keycode == KEY_S || keycode == KEY_UP || keycode == KEY_DOWN)
-		game->walk_direction = 0;
-	else if (keycode == KEY_A || keycode == KEY_D)
-		game->side_direction = 0;
-	else if (keycode == KEY_LEFT || keycode == KEY_RIGHT)
-		game->turn_direction = 0;
-	
+	if (keycode == KEY_W)
+		game->input.w = 0;
+	else if (keycode == KEY_S)
+		game->input.s = 0;
+	else if (keycode == KEY_A)
+		game->input.a = 0;
+	else if (keycode == KEY_D)
+		game->input.d = 0;
+	else if (keycode == KEY_LEFT)
+		game->input.left = 0;
+	else if (keycode == KEY_RIGHT)
+		game->input.right = 0;
+
+	/* Recompute aggregate directions from per-key state */
+	game->walk_direction = (game->input.w ? 1 : 0) + (game->input.s ? -1 : 0);
+	if (game->walk_direction > 1) game->walk_direction = 1;
+	if (game->walk_direction < -1) game->walk_direction = -1;
+
+	game->side_direction = (game->input.d ? 1 : 0) + (game->input.a ? -1 : 0);
+	if (game->side_direction > 1) game->side_direction = 1;
+	if (game->side_direction < -1) game->side_direction = -1;
+
+	game->turn_direction = (game->input.right ? 1 : 0) + (game->input.left ? -1 : 0);
+	if (game->turn_direction > 1) game->turn_direction = 1;
+	if (game->turn_direction < -1) game->turn_direction = -1;
+
 	return (0);
 }
 
-/*
-** Mouse motion handler (MotionNotify event)
-** Rotates the view based on horizontal mouse delta.
-*/
-int	handle_mousemove(int x, int y, t_game *game)
-{
-    int		dx;
-    int		dy;
-    (void)y; /* y currently unused; keep to avoid unused warning */
-
-	if (!game->mouse_look_enabled)
-		return (0);
-
-	/* First event: initialize reference point */
-	if (game->last_mouse_x == -1)
-	{
-		game->last_mouse_x = x;
-		game->last_mouse_y = y;
-		return (0);
-	}
-
-    dx = x - game->last_mouse_x;
-    dy = y - game->last_mouse_y;
-    if (dx != 0)
-    {
-        double delta_angle = (double)dx * (game->mouse_sensitivity > 0 ?
-                game->mouse_sensitivity : MOUSE_SENSITIVITY);
-        game->player_angle = normalize_angle(game->player_angle + delta_angle);
-
-		/* Keep discrete facing dir roughly in sync (optional) */
-		if (game->player_angle >= 7 * PI / 4 || game->player_angle < PI / 4)
-			game->config->player.dir = CH_E;
-		else if (game->player_angle >= PI / 4 && game->player_angle < 3 * PI / 4)
-			game->config->player.dir = CH_S;
-		else if (game->player_angle >= 3 * PI / 4 && game->player_angle < 5 * PI / 4)
-			game->config->player.dir = CH_W;
-		else
-			game->config->player.dir = CH_N;
-	}
-
-    /* Update vertical camera pitch: moving mouse up should look up (walls shift down) */
-    if (dy != 0)
-    {
-        double pitch_delta = -(double)dy * (game->mouse_pitch_sensitivity > 0 ?
-                game->mouse_pitch_sensitivity : MOUSE_PITCH_SENSITIVITY);
-        game->camera_pitch_pixels += pitch_delta;
-        /* Clamp pitch to keep horizon within screen */
-        if (game->camera_pitch_pixels > SCREEN_HEIGHT / 2)
-            game->camera_pitch_pixels = SCREEN_HEIGHT / 2;
-        if (game->camera_pitch_pixels < -SCREEN_HEIGHT / 2)
-            game->camera_pitch_pixels = -SCREEN_HEIGHT / 2;
-    }
-
-    game->last_mouse_x = x;
-    game->last_mouse_y = y;
-    return (0);
-}
+/* Mouse look removed: movement is keyboard only */

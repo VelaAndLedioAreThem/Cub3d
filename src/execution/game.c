@@ -24,14 +24,14 @@ void	init_game(t_game *game, t_config *config)
 	game->turn_direction = 0;
 	game->walk_direction = 0;
 	game->side_direction = 0;
+	game->input.w = 0;
+	game->input.a = 0;
+	game->input.s = 0;
+	game->input.d = 0;
+	game->input.left = 0;
+	game->input.right = 0;
 
-	/* Mouse look defaults (start disabled) */
-	game->mouse_look_enabled = 0;
-	game->last_mouse_x = -1;
-	game->last_mouse_y = -1;
-	game->mouse_sensitivity = MOUSE_SENSITIVITY;
-	game->mouse_pitch_sensitivity = MOUSE_PITCH_SENSITIVITY;
-	game->camera_pitch_pixels = 0.0;
+	/* Mouse look removed: no mouse state to init */
 	
 	for (i = 0; i < NUM_RAYS; i++)
 	{
@@ -88,7 +88,9 @@ void	init_game(t_game *game, t_config *config)
 	
 	init_player_from_config(config);
 
-	// Initialize continuous player angle from starting direction
+	/* Initialize player world position (pixels) and viewing angle */
+	game->player_x = (config->player.x + 0.5) * TILE_SIZE;
+	game->player_y = (config->player.y + 0.5) * TILE_SIZE;
 	if (config->player.dir == CH_N)
 		game->player_angle = 3 * PI / 2;
 	else if (config->player.dir == CH_S)
@@ -116,8 +118,7 @@ void	setup_hooks(t_game *game)
 {
 	mlx_hook(game->window, 2, 1L<<0, handle_keypress, game);
 	mlx_hook(game->window, 3, 1L<<1, handle_keyrelease, game);
-	/* Mouse motion: event 6 (MotionNotify), mask 1L<<6 (PointerMotionMask) */
-	mlx_hook(game->window, 6, 1L<<6, handle_mousemove, game);
+	/* No mouse motion hook (mouse look disabled) */
 	mlx_hook(game->window, 17, 1L<<17, cleanup_and_exit, game);
 	mlx_loop_hook(game->mlx, game_loop, game);
 }
