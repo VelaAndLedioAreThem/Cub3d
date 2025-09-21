@@ -56,6 +56,9 @@ int		mlx_destroy_display(void *mlx_ptr);
 # define KEY_D 100
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+# define KEY_UP 65362
+# define KEY_DOWN 65364
+/* reserve key codes if needed */
 
 /* ---- Ray structure ---- */
 typedef struct s_ray
@@ -102,12 +105,25 @@ typedef struct s_game
 	
 	int			game_running;
 	int			frame_count;
-	
+
 	int			turn_direction;
 	int			walk_direction;
 	int			side_direction;
-	/* Continuous viewing angle in radians (0..2*PI) */
-	double			player_angle;
+
+	/* Per-key input state to reliably combine inputs */
+	struct {
+		int w;
+		int a;
+		int s;
+		int d;
+		int left;
+		int right;
+		} input;
+		/* Player continuous state (pixels + radians) */
+		double			player_x;
+		double			player_y;
+		double			player_angle;
+
 }	t_game;
 
 /* ---- Main execution functions ---- */

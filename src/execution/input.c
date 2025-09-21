@@ -15,31 +15,65 @@
 int	handle_keypress(int keycode, t_game *game)
 {
 	if (keycode == KEY_W)
-		game->walk_direction = 1;
+		game->input.w = 1;
 	else if (keycode == KEY_S)
-		game->walk_direction = -1;
+		game->input.s = 1;
 	else if (keycode == KEY_A)
-		game->side_direction = -1;
+		game->input.a = 1;
 	else if (keycode == KEY_D)
-		game->side_direction = 1;
+		game->input.d = 1;
 	else if (keycode == KEY_LEFT)
-		game->turn_direction = -1;
+		game->input.left = 1;
 	else if (keycode == KEY_RIGHT)
-		game->turn_direction = 1;
+		game->input.right = 1;
 	else if (keycode == KEY_ESC)
 		cleanup_and_exit(game);
-	
+
+	/* Recompute aggregate directions from per-key state */
+	game->walk_direction = (game->input.w ? 1 : 0) + (game->input.s ? -1 : 0);
+	if (game->walk_direction > 1) game->walk_direction = 1;
+	if (game->walk_direction < -1) game->walk_direction = -1;
+
+	game->side_direction = (game->input.d ? 1 : 0) + (game->input.a ? -1 : 0);
+	if (game->side_direction > 1) game->side_direction = 1;
+	if (game->side_direction < -1) game->side_direction = -1;
+
+	game->turn_direction = (game->input.right ? 1 : 0) + (game->input.left ? -1 : 0);
+	if (game->turn_direction > 1) game->turn_direction = 1;
+	if (game->turn_direction < -1) game->turn_direction = -1;
+
 	return (0);
 }
 
 int	handle_keyrelease(int keycode, t_game *game)
 {
-	if (keycode == KEY_W || keycode == KEY_S)
-		game->walk_direction = 0;
-	else if (keycode == KEY_A || keycode == KEY_D)
-		game->side_direction = 0;
-	else if (keycode == KEY_LEFT || keycode == KEY_RIGHT)
-		game->turn_direction = 0;
-	
+	if (keycode == KEY_W)
+		game->input.w = 0;
+	else if (keycode == KEY_S)
+		game->input.s = 0;
+	else if (keycode == KEY_A)
+		game->input.a = 0;
+	else if (keycode == KEY_D)
+		game->input.d = 0;
+	else if (keycode == KEY_LEFT)
+		game->input.left = 0;
+	else if (keycode == KEY_RIGHT)
+		game->input.right = 0;
+
+	/* Recompute aggregate directions from per-key state */
+	game->walk_direction = (game->input.w ? 1 : 0) + (game->input.s ? -1 : 0);
+	if (game->walk_direction > 1) game->walk_direction = 1;
+	if (game->walk_direction < -1) game->walk_direction = -1;
+
+	game->side_direction = (game->input.d ? 1 : 0) + (game->input.a ? -1 : 0);
+	if (game->side_direction > 1) game->side_direction = 1;
+	if (game->side_direction < -1) game->side_direction = -1;
+
+	game->turn_direction = (game->input.right ? 1 : 0) + (game->input.left ? -1 : 0);
+	if (game->turn_direction > 1) game->turn_direction = 1;
+	if (game->turn_direction < -1) game->turn_direction = -1;
+
 	return (0);
 }
+
+/* Mouse look removed: movement is keyboard only */

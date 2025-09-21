@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
+#include <X11/Xlib.h>
+#include "../../lib/mlx/mlx_int.h"
 
 void	init_game(t_game *game, t_config *config)
 {
@@ -22,6 +24,14 @@ void	init_game(t_game *game, t_config *config)
 	game->turn_direction = 0;
 	game->walk_direction = 0;
 	game->side_direction = 0;
+	game->input.w = 0;
+	game->input.a = 0;
+	game->input.s = 0;
+	game->input.d = 0;
+	game->input.left = 0;
+	game->input.right = 0;
+
+	/* Mouse look removed: no mouse state to init */
 	
 	for (i = 0; i < NUM_RAYS; i++)
 	{
@@ -47,6 +57,27 @@ void	init_game(t_game *game, t_config *config)
 	game->window = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D");
 	if (!game->window)
 		return;
+
+	/* Request fullscreen from the window manager (EWMH) */
+	{
+		Display *dpy = ((t_xvar*)game->mlx)->display;
+		Window win = ((t_win_list*)game->window)->window;
+		Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
+		Atom fs_atom = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+		XEvent xev;
+		memset(&xev, 0, sizeof(xev));
+		xev.xclient.type = ClientMessage;
+		xev.xclient.window = win;
+		xev.xclient.message_type = wm_state;
+		xev.xclient.format = 32;
+		xev.xclient.data.l[0] = 1; /* _NET_WM_STATE_ADD */
+		xev.xclient.data.l[1] = fs_atom;
+		xev.xclient.data.l[2] = 0;
+		xev.xclient.data.l[3] = 1;
+		XSendEvent(dpy, DefaultRootWindow(dpy), False,
+		          SubstructureRedirectMask | SubstructureNotifyMask, &xev);
+		XFlush(dpy);
+	}
 	
 	game->img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!game->img)
@@ -57,7 +88,9 @@ void	init_game(t_game *game, t_config *config)
 	
 	init_player_from_config(config);
 
-	// Initialize continuous player angle from starting direction
+	/* Initialize player world position (pixels) and viewing angle */
+	game->player_x = (config->player.x + 0.5) * TILE_SIZE;
+	game->player_y = (config->player.y + 0.5) * TILE_SIZE;
 	if (config->player.dir == CH_N)
 		game->player_angle = 3 * PI / 2;
 	else if (config->player.dir == CH_S)
@@ -85,6 +118,7 @@ void	setup_hooks(t_game *game)
 {
 	mlx_hook(game->window, 2, 1L<<0, handle_keypress, game);
 	mlx_hook(game->window, 3, 1L<<1, handle_keyrelease, game);
+	/* No mouse motion hook (mouse look disabled) */
 	mlx_hook(game->window, 17, 1L<<17, cleanup_and_exit, game);
 	mlx_loop_hook(game->mlx, game_loop, game);
 }
@@ -134,26 +168,8 @@ int	game_loop(void *param)
  */
 int	cleanup_and_exit(t_game *game)
 {
-	// Free game-specific data
+	/* Unified cleanup in one place to avoid double-destroys */
 	free_game_data(game);
-	
-	// Destroy MLX image if it exists
-	if (game->img)
-		mlx_destroy_image(game->mlx, game->img);
-	
-	// Destroy window if it exists
-	if (game->window)
-		mlx_destroy_window(game->mlx, game->window);
-	
-	// Clean up MLX connection
-	if (game->mlx)
-	{
-		// Note: On some systems, mlx_destroy_display might be needed
-		// mlx_destroy_display(game->mlx);
-		free(game->mlx);
-	}
-	
-	// Exit program successfully
 	exit(0);
 	return (0);
 }
