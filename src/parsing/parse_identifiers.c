@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:31:10 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 22:58:20 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:11:10 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	id_try_textures(t_identifiers *p, t_config *cfg)
 {
 	static const char *const	keys[4] = {"NO", "SO", "WE", "EA"};
 	static const char *const	dups[4] = {
-		"duplciat NO", "duplicate SO", "duplicate WE", "duplicate EA"
+		"duplicate NO", "duplicate SO", "duplicate WE", "duplicate EA"
 	};
 	int							i;
 	const char					*r;
@@ -70,7 +70,7 @@ int	id_proccess_line(t_identifiers *p, int i, int *consumed, t_config *cfg)
 
 	pre = id_precheck(p->s, i, consumed);
 	if (pre == 1)
-		return (*consumed = i + i, 1);
+		return (*consumed = i + 1, 1);
 	if (pre == 2)
 		return (2);
 	p->rc = id_try_textures(p, cfg);

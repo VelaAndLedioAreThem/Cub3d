@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:13:38 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 23:07:23 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:10:18 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	looks_like_map_line(const char *s)
 {
 	int		has_cell;
 
+	has_cell = 0;
 	s = skip_spaces(s);
 	if (!s || *s == '\0')
 		return (0);

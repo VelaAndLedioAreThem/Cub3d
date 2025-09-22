@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:32:32 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 16:10:39 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:11:32 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ int	validate_map_closed(t_map *map)
 			{
 				if (y == 0 || y == map->height - 1 || x == 0
 					|| x == map->width - 1)
-					return (perr(P_EFMT, "map not closed (edge"));
+					return (perr(P_EFMT, "map not closed (edge)"));
 				if (map->grid[y - 1][x] == ' ' || map->grid[y + 1][x] == ' '
 					|| map->grid[y][x - 1] == ' ' || map->grid[y][x + 1] == ' ')
-					return (perr(P_EFMT, "map not close (void"));
+					return (perr(P_EFMT, "map not close (void)"));
 			}
 			x++;
 		}
