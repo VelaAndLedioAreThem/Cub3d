@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:06:45 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 23:03:43 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 20:51:54 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	read_num_0_255(const char **str, int *color)
 		has_digit = 1;
 		val = val * 10 + (*p - '0');
 		if (val < 0 || val > 255)
-			return (perr(P_EFMT, "color out of range"));
+			return (perr(P_EFMT, "color out of range"), 1);
 		p++;
 	}
 	if (!has_digit)

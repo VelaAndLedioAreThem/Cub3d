@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:13:38 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 16:10:18 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:28:39 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ int	looks_like_map_line(const char *s)
 		return (0);
 	while (*s)
 	{
-		if (!(*s == CH_WALL || *s == CH_SPACE || *s == CH_N
-				|| *s == CH_W || *s == CH_S || *s == CH_E))
+		if (*s == '\n' || *s == '\r')
+			break ;
+		if (!(*s == CH_WALL || *s == CH_SPACE || *s == CH_VOID
+				|| *s == CH_N || *s == CH_W || *s == CH_S || *s == CH_E))
 			return (0);
 		if (*s != CH_VOID && *s != '\t')
 			has_cell = 1;

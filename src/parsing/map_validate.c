@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 21:25:26 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 22:12:02 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:27:53 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	fill_row_chars(t_row_map *row)
 		row->dst[x++] = (char)ch;
 	}
 	while (x < row->width)
-		row->dst[x++] = ' ';
+		row->dst[x++] = CH_WALL;
 	row->dst[row->width] = '\0';
 	return (0);
 }
