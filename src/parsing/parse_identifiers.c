@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:31:10 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 20:53:40 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 21:02:54 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static int	id_try_textures(t_identifiers *p, t_config *cfg)
 		if (!r)
 			continue ;
 		if (p->seen[i])
-			return (perr(P_EDUP, dups[i]));
-		p->seen[i] = 1;
+			return (-perr(P_EDUP, dups[i]));
 		rc = parse_textures(r, i, cfg);
 		if (rc != 0)
-			return (rc);
+			return (-rc);
+		p->seen[i] = 1;
 		return (1);
 	}
 	return (0);
@@ -42,15 +42,17 @@ static int	id_try_textures(t_identifiers *p, t_config *cfg)
 int	id_try_floor(t_identifiers *p, t_config *cfg)
 {
 	const char		*r;
+	int				rc;
 
 	r = keyreset(p->s, "F");
 	if (!r)
 		return (0);
 	if (p->sf)
-		return (perr(P_EDUP, "duplicate F"));
+		return (-perr(P_EDUP, "duplicate F"));
+	rc = parse_color(r, &cfg->floor);
+	if (rc != 0)
+		return (-rc);
 	p->sf = 1;
-	if (parse_color(r, &cfg->floor) != 0)
-		return (perr(P_EFMT, NULL), 0);
 	return (1);
 }
 
@@ -88,7 +90,7 @@ int	id_proccess_line(t_identifiers *p, int i, int *consumed, t_config *cfg)
 		return (p->rc);
 	if (p->rc > 0)
 		return (*consumed = i + 1, 1);
-	return (perr(P_EFMT, "unknown identifier line"));
+	return (-perr(P_EFMT, "unknown identifier line"));
 }
 
 int	parse_identifiers(char **lines, int n, int *consumed, t_config *cfg)

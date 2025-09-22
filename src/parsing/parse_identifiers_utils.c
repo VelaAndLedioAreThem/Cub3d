@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 22:11:00 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 23:00:48 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 21:03:58 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	id_precheck(const char *s, int i, int *consumed)
 	(void)i;
 	(void)consumed;
 	if (!s || !consumed)
-		return (perr(P_EARG, "id_precheck: bad args"));
+		return (-perr(P_EARG, "id_precheck: bad args"));
 	p = s;
 	while (*p == ' ' || *p == '\t')
 		p++;
@@ -42,14 +42,16 @@ const char	*skip_spaces(const char *s)
 int	id_try_ceil(t_identifiers *p, t_config *cfg)
 {
 	const char	*r;
+	int			rc;
 
 	r = keyreset(p->s, "C");
 	if (!r)
 		return (0);
 	if (p->sc)
-		return (perr(P_EDUP, "duplicate C"));
+		return (-perr(P_EDUP, "duplicate C"));
+	rc = parse_color(r, &cfg->ceil);
+	if (rc != 0)
+		return (-rc);
 	p->sc = 1;
-	if (parse_color(r, &cfg->ceil) != 0)
-		return (perr(P_EFMT, NULL));
 	return (1);
 }

@@ -4,7 +4,7 @@
 NAME = cub3d
 TEST_NAME = cub3d_test
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude -Ilib/libft/include -Ilib/mlx -Ilib/libft/gnl/include
+CFLAGS = -Wall -g -Wextra -Werror -Iinclude -Ilib/libft/include -Ilib/mlx -Ilib/libft/gnl/include
 
 # Minimal, readable build output
 .SILENT:
