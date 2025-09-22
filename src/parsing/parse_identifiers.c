@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:31:10 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 16:11:10 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/22 20:53:40 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	id_try_floor(t_identifiers *p, t_config *cfg)
 		return (perr(P_EDUP, "duplicate F"));
 	p->sf = 1;
 	if (parse_color(r, &cfg->floor) != 0)
-		return (perr(P_EFMT, NULL));
+		return (perr(P_EFMT, NULL), 0);
 	return (1);
 }
 
