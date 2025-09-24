@@ -18,25 +18,44 @@ int	is_blank(const char *s)
 		return (1);
 	while (*s)
 	{
-		if (*s != ' ' && *s != '\t' && *s != '\n' && *s != '\r')
-			return (0);
-		s++;
+		if (*s == ' ' || *s == '\t' || *s == '\n' || *s == '\r')
+		{
+			s++;
+			continue ;
+		}
+		if (*s == '\\' && (s[1] == 'r' || s[1] == 'n'))
+		{
+			s += 2;
+			continue ;
+		}
+		return (0);
 	}
 	return (1);
 }
 
 void	rtrim_in_place(char *s)
 {
-	int		len;
+	size_t		len;
 
 	if (!s)
 		return ;
-	len = (int)ft_strlen(s);
-	while (len > 0 && (s[len - 1] == ' ' || s[len - 1] == '\t'
-			|| s[len - 1] == '\n' || s[len - 1] == '\r'))
+	len = ft_strlen(s);
+	while (len > 0)
 	{
-		s[len - 1] = '\0';
-		len--;
+		if (s[len - 1] == ' ' || s[len - 1] == '\t'
+			|| s[len - 1] == '\n' || s[len - 1] == '\r')
+		{
+			s[--len] = '\0';
+			continue ;
+		}
+		if (len >= 2 && s[len - 2] == '\\'
+			&& (s[len - 1] == 'r' || s[len - 1] == 'n'))
+		{
+			len -= 2;
+			s[len] = '\0';
+			continue ;
+		}
+		break ;
 	}
 }
 

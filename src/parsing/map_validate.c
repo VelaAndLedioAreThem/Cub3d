@@ -14,8 +14,25 @@
 
 int	is_blank_line(const char *s)
 {
-	while (*s && (*s == ' ' || *s == '\t'))
-		s++;
+	while (*s)
+	{
+		if (*s == ' ' || *s == '\t')
+		{
+			s++;
+			continue ;
+		}
+		if (*s == '\r' || *s == '\n')
+		{
+			s++;
+			continue ;
+		}
+		if (*s == '\\' && (s[1] == 'r' || s[1] == 'n'))
+		{
+			s += 2;
+			continue ;
+		}
+		break ;
+	}
 	return (*s == '\0');
 }
 
@@ -24,9 +41,22 @@ size_t	rtrim_len(const char *s)
 	const char		*end;
 
 	end = s + ft_strlen(s);
-	while (end > s && (end[-1] == ' ' || end[-1] == '\t' || end[-1] == '\r'
-			|| end[-1] == '\n'))
-		end--;
+	while (end > s)
+	{
+		if (end[-1] == ' ' || end[-1] == '\t'
+			|| end[-1] == '\r' || end[-1] == '\n')
+		{
+			end--;
+			continue ;
+		}
+		if ((end - s) >= 2 && end[-2] == '\\'
+			&& (end[-1] == 'r' || end[-1] == 'n'))
+		{
+			end -= 2;
+			continue ;
+		}
+		break ;
+	}
 	return ((size_t)(end - s));
 }
 

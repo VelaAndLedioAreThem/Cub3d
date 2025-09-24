@@ -14,17 +14,26 @@
 
 void	rstrip_crlf(char *s)
 {
-	size_t		n;
+	size_t		len;
 
 	if (!s)
 		return ;
-	n = 0;
-	while (s[n])
-		n++;
-	while (n > 0 && (s[n - 1] == '\n' || s[n - 1] == '\r'))
+	len = ft_strlen(s);
+	while (len > 0)
 	{
-		s[n - 1] = '\0';
-		n--;
+		if (s[len - 1] == '\n' || s[len - 1] == '\r')
+		{
+			s[--len] = '\0';
+			continue ;
+		}
+		if (len >= 2 && s[len - 2] == '\\'
+			&& (s[len - 1] == 'r' || s[len - 1] == 'n'))
+		{
+			len -= 2;
+			s[len] = '\0';
+			continue ;
+		}
+		break ;
 	}
 }
 
