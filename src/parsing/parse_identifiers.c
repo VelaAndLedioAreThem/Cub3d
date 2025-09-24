@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:31:10 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 21:02:54 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:58:03 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	parse_identifiers(char **lines, int n, int *consumed, t_config *cfg)
 	i = -1;
 	while (++i < n)
 	{
+		normalize_line(lines[i], i == 0);
 		parse.s = skip_spaces(lines[i]);
 		pre = id_proccess_line(&parse, i, consumed, cfg);
 		if (pre == 1)

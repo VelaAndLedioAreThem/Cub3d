@@ -27,6 +27,7 @@ SRCS = \
 	   $(PARSING_DIR)/init_config.c $(PARSING_DIR)/parse_config.c $(PARSING_DIR)/errors.c \
 	   $(PARSING_DIR)/files_utils.c $(PARSING_DIR)/parse_colors.c $(PARSING_DIR)/map_validate.c \
 	   $(PARSING_DIR)/parse_identifiers.c $(PARSING_DIR)/parse_map.c $(PARSING_DIR)/parse_textures.c \
+	   $(PARSING_DIR)/parse_identifiers_utils_1.c \
 	   $(PARSING_DIR)/parse_utils.c $(PARSING_DIR)/parse_identifiers_utils.c $(PARSING_DIR)/map_validate_utils.c\
 	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c $(EXECUTION_DIR)/rendering.c \
 	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c $(EXECUTION_DIR)/utils.c \

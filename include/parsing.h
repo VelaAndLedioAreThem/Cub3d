@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:22:41 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 22:20:22 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:57:42 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,8 @@ int			check_player_count(int pc);
 int			fill_row_chars(t_row_map *row);
 int			validate_map_closed(t_map *map);
 int			validate_not_empty_map(t_map *map);
+void		rstrip_crlf(char *s);
+void		strip_utf8_boom(char *str);
+void		tabs_to_space(char *s);
+void		normalize_line(char *s, int is_first);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 22:11:00 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 21:03:58 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:53:30 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,32 @@ int	id_precheck(const char *s, int i, int *consumed)
 	if (looks_like_map_line(s))
 		return (2);
 	return (0);
+}
+
+void	strip_utf8_boom(char *str)
+{
+	unsigned char	*p;
+
+	if (!str)
+		return ;
+	p = (unsigned char *)str;
+	if (p[0] == 0xEF && p[1] == 0xBB && p[2] == 0xBF)
+		ft_memmove(str, str + 3, ft_strlen(str + 3) + 1);
+}
+
+void	tabs_to_space(char *s)
+{
+	int		i;
+
+	if (!s)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\t')
+			s[i] = ' ';
+		i++;
+	}
 }
 
 const char	*skip_spaces(const char *s)
