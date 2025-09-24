@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:21:37 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 20:59:25 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 22:27:21 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	main(int ac, char **av)
 		return (perr(P_EARG, "Usage: ./cub3d <file.cub>"));
 	if (parse_config(av[1], &cfg) != 0)
 		return (destroy_configs(&cfg), 1);
-	
 	init_game(&game, &cfg);
 	setup_hooks(&game);
 	mlx_loop(game.mlx);

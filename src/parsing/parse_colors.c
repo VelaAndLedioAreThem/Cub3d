@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:06:45 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 20:51:54 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 22:54:17 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,16 @@ int	parse_rgb_triplet(const char *s, int *r, int *g, int *b)
 	p = s;
 	if (read_num_0_255(&p, r) != 0)
 		return (1);
+	skip_ws(&p);
 	if (expect_comma(&p) != 0)
 		return (1);
+	skip_ws(&p);
 	if (read_num_0_255(&p, g) != 0)
 		return (1);
+	skip_ws(&p);
 	if (expect_comma(&p) != 0)
 		return (1);
+	skip_ws(&p);
 	if (read_num_0_255(&p, b) != 0)
 		return (1);
 	skip_ws(&p);

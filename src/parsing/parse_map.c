@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 21:22:01 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/19 22:20:13 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 22:31:16 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	map_alloc_grid(t_map *map)
 {
 	int		i;
 
+	if (!map->grid)
+		return (-1);
 	map->grid = (char **)malloc(sizeof(char *) * map->height);
 	if (!map->grid)
 		return (-1);
