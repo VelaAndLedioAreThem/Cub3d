@@ -43,7 +43,7 @@ int	map_alloc_grid(t_map *map)
 {
 	int		i;
 
-	if (!map->grid)
+	if (!map || map->height <= 0 || map->width <= 0)
 		return (-1);
 	map->grid = (char **)malloc(sizeof(char *) * map->height);
 	if (!map->grid)
@@ -53,7 +53,13 @@ int	map_alloc_grid(t_map *map)
 	{
 		map->grid[i] = (char *)malloc((size_t)map->width + 1);
 		if (!map->grid[i])
+		{
+			while (i > 0)
+				free(map->grid[--i]);
+			free(map->grid);
+			map->grid = NULL;
 			return (-1);
+		}
 		i++;
 	}
 	return (0);

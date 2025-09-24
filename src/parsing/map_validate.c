@@ -86,8 +86,11 @@ int	fill_row_chars(t_row_map *row)
 	while (x < (int)len)
 	{
 		ch = (unsigned char)row->src[x];
-		if (!is_map_char(ch))
-			return (-1);
+                if (!is_map_char(ch))
+                {
+                        perr(P_EFMT, "invalid map character");
+                        return (-1);
+                }
 		if (ch == 'N' || ch == 'S' || ch == 'E' || ch == 'W')
 		{
 			row->player->x = x + 0.5;
