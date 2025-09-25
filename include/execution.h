@@ -68,6 +68,7 @@ int		mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y, int color, char 
 # define KEY_M 109
 # define KEY_C 99
 # define KEY_H 104
+# define KEY_F 102
 
 /* ---- Ray structure ---- */
 typedef struct s_ray
@@ -140,9 +141,7 @@ typedef struct s_game
 	int			show_crosshair;
 	int			show_hud;
 
-	/* Mouse look */
-	int			mouse_initialized;
-	int			last_mouse_x;
+
 
 }	t_game;
 
@@ -184,7 +183,7 @@ int		create_rgb(int r, int g, int b);
 /* ---- Input handling ---- */
 int		handle_keypress(int keycode, t_game *game);
 int		handle_keyrelease(int keycode, t_game *game);
-int		handle_mouse_move(int x, int y, t_game *game);
+void	toggle_fullscreen(t_game *game);
 
 /* ---- Cleanup ---- */
 int		cleanup_and_exit(t_game *game);

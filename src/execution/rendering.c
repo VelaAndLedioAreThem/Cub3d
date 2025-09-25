@@ -91,22 +91,41 @@ void    render_wall_strip(t_game *game, int strip_id)
     wall_height = calculate_wall_height(corrected_distance);
     wall_top = (SCREEN_HEIGHT / 2) - (wall_height / 2);
     wall_bottom = (SCREEN_HEIGHT / 2) + (wall_height / 2);
-    if (wall_top < 0)
-        wall_top = 0;
-    if (wall_bottom >= SCREEN_HEIGHT)
-        wall_bottom = SCREEN_HEIGHT - 1;
+    /* We will clip to screen but keep a running tex_pos to avoid warping */
+    if (wall_top < -100000) wall_top = -100000; /* guard overflow on huge walls */
+    if (wall_bottom > 100000) wall_bottom = 100000;
 
     texture = select_wall_texture(game, ray);
     if (!texture || !texture->addr)
         return;
     tex_x = calculate_texture_x(ray, texture);
 
-    for (y = wall_top; y <= wall_bottom; y++)
     {
-        tex_y = (y - wall_top) * texture->height / wall_height;
-        if (tex_y < 0) tex_y = 0;
-        if (tex_y >= texture->height) tex_y = texture->height - 1;
-        put_pixel(game, strip_id, y, get_texture_color(texture, tex_x, tex_y));
+        /* Texture vertical sampling with proper step and clipped start */
+        double step;
+        double tex_pos;
+        int    draw_start;
+        int    draw_end;
+
+        step = (double)texture->height / (double)wall_height;
+        draw_start = wall_top;
+        draw_end = wall_bottom;
+        tex_pos = 0.0;
+        if (draw_start < 0)
+            tex_pos = (-draw_start) * step; /* skip the hidden top part */
+        if (draw_start < 0)
+            draw_start = 0;
+        if (draw_end >= SCREEN_HEIGHT)
+            draw_end = SCREEN_HEIGHT - 1;
+
+        for (y = draw_start; y <= draw_end; y++)
+        {
+            tex_y = (int)tex_pos;
+            if (tex_y < 0) tex_y = 0;
+            if (tex_y >= texture->height) tex_y = texture->height - 1;
+            put_pixel(game, strip_id, y, get_texture_color(texture, tex_x, tex_y));
+            tex_pos += step;
+        }
     }
 }
 

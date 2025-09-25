@@ -12,6 +12,8 @@
 
 #include "../../include/execution.h"
 
+ 
+
 int	handle_keypress(int keycode, t_game *game)
 {
 	if (keycode == KEY_W)
@@ -36,6 +38,9 @@ int	handle_keypress(int keycode, t_game *game)
 		game->show_crosshair = !game->show_crosshair;
 	else if (keycode == KEY_H)
 		game->show_hud = !game->show_hud;
+ 
+	else if (keycode == KEY_F)
+		toggle_fullscreen(game);
 	else if (keycode == KEY_ESC)
 		cleanup_and_exit(game);
 
@@ -90,22 +95,4 @@ int	handle_keyrelease(int keycode, t_game *game)
 	return (0);
 }
 
-int	handle_mouse_move(int x, int y, t_game *game)
-{
-	(void)y;
-	if (!game)
-		return (0);
-	if (!game->mouse_initialized)
-	{
-		game->mouse_initialized = 1;
-		game->last_mouse_x = x;
-		return (0);
-	}
-	{
-		int dx = x - game->last_mouse_x;
-		double sensitivity = 0.0025; /* radians per pixel */
-		game->player_angle = normalize_angle(game->player_angle + dx * sensitivity);
-		game->last_mouse_x = x;
-	}
-	return (0);
-}
+ 

@@ -172,12 +172,12 @@ void    cast_all_rays(t_game *game)
     double  angle_increment;
     int     strip_id;
 
-    angle_increment = FOV_ANGLE / NUM_RAYS;
-    ray_angle = game->player_angle - (FOV_ANGLE / 2.0);
-
+    /* Sample at the center of each column to reduce edge distortion */
+    angle_increment = FOV_ANGLE / (double)NUM_RAYS;
     for (strip_id = 0; strip_id < NUM_RAYS; strip_id++)
     {
+        ray_angle = game->player_angle - (FOV_ANGLE / 2.0)
+                  + (strip_id + 0.5) * angle_increment;
         cast_ray(game, ray_angle, strip_id);
-        ray_angle += angle_increment;
     }
 }
