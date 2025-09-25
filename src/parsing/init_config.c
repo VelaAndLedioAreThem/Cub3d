@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:36:47 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/24 22:32:47 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/24 23:22:05 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ void	destroy_configs(t_config *config)
 	{
 		i = 0;
 		while (i < config->map.height)
-			free(config->map.grid[++i]);
+			free(config->map.grid[i++]);
 		free(config->map.grid);
+		config->map.grid = NULL;
 	}
 	init_configs(config);
 }
