@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 21:25:26 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/25 13:06:03 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:47:51 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int	check_player_count(int pc)
 	if (pc == 1)
 		return (0);
 	if (pc == 0)
-		return (-2);
-	return (-3);
+		return (perr(P_EMAP, "map is missing player spawn"));
+	return (perr(P_EMAP, "map has multiple player spawns"));
 }
 
 int	is_map_char(char ch)
