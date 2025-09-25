@@ -22,11 +22,17 @@ static void	move_player(t_game *game)
 {
     double move_step;
     double side_step;
+    double speed;
     double new_x;
     double new_y;
 
-    move_step = (double)game->walk_direction * MOVE_SPEED;
-    side_step = (double)game->side_direction * MOVE_SPEED;
+    speed = MOVE_SPEED;
+    if (game->input.shift)
+        speed *= 1.8;
+    if (game->input.ctrl)
+        speed *= 0.5;
+    move_step = (double)game->walk_direction * speed;
+    side_step = (double)game->side_direction * speed;
 
     new_x = game->player_x;
     new_y = game->player_y;
@@ -58,4 +64,3 @@ void	update_player(t_game *game)
     }
     move_player(game);
 }
-

@@ -31,12 +31,14 @@ SRCS = \
 	   $(PARSING_DIR)/parse_utils.c $(PARSING_DIR)/parse_identifiers_utils.c $(PARSING_DIR)/map_validate_utils.c\
 	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c $(EXECUTION_DIR)/rendering.c \
 	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c $(EXECUTION_DIR)/utils.c \
+	   $(EXECUTION_DIR)/minimap.c $(EXECUTION_DIR)/hud.c \
 
 TEST_SRCS = \
 	   $(SCR_DIR)/test_main.c \
 	   $(PARSING_DIR)/init_config.c \
 	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c $(EXECUTION_DIR)/rendering.c \
 	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c $(EXECUTION_DIR)/utils.c \
+	   $(EXECUTION_DIR)/minimap.c $(EXECUTION_DIR)/hud.c \
 	   $(EXECUTION_DIR)/test_setup.c \
 
 OBJS = $(SRCS:.c=.o)

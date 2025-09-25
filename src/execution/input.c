@@ -26,6 +26,16 @@ int	handle_keypress(int keycode, t_game *game)
 		game->input.left = 1;
 	else if (keycode == KEY_RIGHT)
 		game->input.right = 1;
+	else if (keycode == KEY_SHIFT_L || keycode == KEY_SHIFT_R)
+		game->input.shift = 1;
+	else if (keycode == KEY_CTRL_L || keycode == KEY_CTRL_R)
+		game->input.ctrl = 1;
+	else if (keycode == KEY_M)
+		game->show_minimap = !game->show_minimap;
+	else if (keycode == KEY_C)
+		game->show_crosshair = !game->show_crosshair;
+	else if (keycode == KEY_H)
+		game->show_hud = !game->show_hud;
 	else if (keycode == KEY_ESC)
 		cleanup_and_exit(game);
 
@@ -59,6 +69,10 @@ int	handle_keyrelease(int keycode, t_game *game)
 		game->input.left = 0;
 	else if (keycode == KEY_RIGHT)
 		game->input.right = 0;
+	else if (keycode == KEY_SHIFT_L || keycode == KEY_SHIFT_R)
+		game->input.shift = 0;
+	else if (keycode == KEY_CTRL_L || keycode == KEY_CTRL_R)
+		game->input.ctrl = 0;
 
 	/* Recompute aggregate directions from per-key state */
 	game->walk_direction = (game->input.w ? 1 : 0) + (game->input.s ? -1 : 0);
@@ -76,4 +90,22 @@ int	handle_keyrelease(int keycode, t_game *game)
 	return (0);
 }
 
-/* Mouse look removed: movement is keyboard only */
+int	handle_mouse_move(int x, int y, t_game *game)
+{
+	(void)y;
+	if (!game)
+		return (0);
+	if (!game->mouse_initialized)
+	{
+		game->mouse_initialized = 1;
+		game->last_mouse_x = x;
+		return (0);
+	}
+	{
+		int dx = x - game->last_mouse_x;
+		double sensitivity = 0.0025; /* radians per pixel */
+		game->player_angle = normalize_angle(game->player_angle + dx * sensitivity);
+		game->last_mouse_x = x;
+	}
+	return (0);
+}

@@ -29,6 +29,7 @@ int		mlx_loop_hook(void *mlx_ptr, int (*funct)(), void *param);
 int		mlx_destroy_image(void *mlx_ptr, void *img_ptr);
 int		mlx_destroy_window(void *mlx_ptr, void *win_ptr);
 int		mlx_destroy_display(void *mlx_ptr);
+int		mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y, int color, char *string);
 
 /* ---- Screen and rendering constants ---- */
 # define SCREEN_WIDTH 1920
@@ -59,6 +60,14 @@ int		mlx_destroy_display(void *mlx_ptr);
 # define KEY_UP 65362
 # define KEY_DOWN 65364
 /* reserve key codes if needed */
+/* Bonus keys */
+# define KEY_SHIFT_L 65505
+# define KEY_SHIFT_R 65506
+# define KEY_CTRL_L 65507
+# define KEY_CTRL_R 65508
+# define KEY_M 109
+# define KEY_C 99
+# define KEY_H 104
 
 /* ---- Ray structure ---- */
 typedef struct s_ray
@@ -118,11 +127,22 @@ typedef struct s_game
 		int d;
 		int left;
 		int right;
+		int shift;
+		int ctrl;
 		} input;
 		/* Player continuous state (pixels + radians) */
 		double			player_x;
 		double			player_y;
 		double			player_angle;
+
+	/* Bonus/UI state */
+	int			show_minimap;
+	int			show_crosshair;
+	int			show_hud;
+
+	/* Mouse look */
+	int			mouse_initialized;
+	int			last_mouse_x;
 
 }	t_game;
 
@@ -147,6 +167,9 @@ double	distance_between_points(double x1, double y1, double x2, double y2);
 void	render_background(t_game *game);
 void	render_walls(t_game *game);
 void	render_wall_strip(t_game *game, int strip_id);
+void	render_minimap(t_game *game);
+void	render_crosshair(t_game *game);
+void	render_hud(t_game *game);
 
 /* ---- Texture functions ---- */
 void	load_textures(t_game *game);
@@ -161,6 +184,7 @@ int		create_rgb(int r, int g, int b);
 /* ---- Input handling ---- */
 int		handle_keypress(int keycode, t_game *game);
 int		handle_keyrelease(int keycode, t_game *game);
+int		handle_mouse_move(int x, int y, t_game *game);
 
 /* ---- Cleanup ---- */
 int		cleanup_and_exit(t_game *game);

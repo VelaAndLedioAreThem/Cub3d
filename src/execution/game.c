@@ -30,8 +30,15 @@ void	init_game(t_game *game, t_config *config)
 	game->input.d = 0;
 	game->input.left = 0;
 	game->input.right = 0;
+	game->input.shift = 0;
+	game->input.ctrl = 0;
 
-	/* Mouse look removed: no mouse state to init */
+	/* Bonus/UI defaults */
+	game->show_minimap = 1;
+	game->show_crosshair = 1;
+	game->show_hud = 1;
+	game->mouse_initialized = 0;
+	game->last_mouse_x = 0;
 	
 	for (i = 0; i < NUM_RAYS; i++)
 	{
@@ -118,7 +125,8 @@ void	setup_hooks(t_game *game)
 {
 	mlx_hook(game->window, 2, 1L<<0, handle_keypress, game);
 	mlx_hook(game->window, 3, 1L<<1, handle_keyrelease, game);
-	/* No mouse motion hook (mouse look disabled) */
+	/* Mouse motion for mouse-look */
+	mlx_hook(game->window, 6, 1L<<6, handle_mouse_move, game);
 	mlx_hook(game->window, 17, 1L<<17, cleanup_and_exit, game);
 	mlx_loop_hook(game->mlx, game_loop, game);
 }
@@ -131,9 +139,14 @@ void	update_game(t_game *game)
 
 void	render_game(t_game *game)
 {
-	render_background(game);
-	render_walls(game);
-	mlx_put_image_to_window(game->mlx, game->window, game->img, 0, 0);
+    render_background(game);
+    render_walls(game);
+    if (game->show_minimap)
+        render_minimap(game);
+    if (game->show_crosshair)
+        render_crosshair(game);
+    mlx_put_image_to_window(game->mlx, game->window, game->img, 0, 0);
+    render_hud(game);
 }
 
 int	game_loop(void *param)
