@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codex                                         +#+  +:+       +#+        */
+/*   By: vela <vela@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 00:00:00 by codex             #+#    #+#             */
-/*   Updated: 2025/09/25 00:00:00 by codex            ###   ########.fr       */
+/*   Created: 2025/09/25 23:07:15 by vela              #+#    #+#             */
+/*   Updated: 2025/09/25 23:07:31 by vela             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,84 +15,105 @@
 #define MM_TILE 8
 #define MM_PADDING 10
 
-static void draw_rect(t_game *game, int x, int y, int w, int h, int color)
+static void	draw_tile(t_game *game, int x, int y, int color)
 {
-    int i, j;
+	int	i;
+	int	j;
+	int	px;
+	int	py;
 
-    for (j = 0; j < h; j++)
-    {
-        int py = y + j;
-        if (py < 0 || py >= SCREEN_HEIGHT)
-            continue;
-        for (i = 0; i < w; i++)
-        {
-            int px = x + i;
-            if (px < 0 || px >= SCREEN_WIDTH)
-                continue;
-            put_pixel(game, px, py, color);
-        }
-    }
+	j = 0;
+	while (j < MM_TILE)
+	{
+		py = y + j;
+		i = 0;
+		while (i < MM_TILE)
+		{
+			px = x + i;
+			if (px >= 0 && px < SCREEN_WIDTH && py >= 0 && py < SCREEN_HEIGHT)
+				put_pixel(game, px, py, color);
+			i++;
+		}
+		j++;
+	}
 }
 
-static void draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
+static void	draw_minimap_tiles(t_game *game, int origin_x, int origin_y)
 {
-    int dx = abs(x1 - x0);
-    int dy = -abs(y1 - y0);
-    int sx = x0 < x1 ? 1 : -1;
-    int sy = y0 < y1 ? 1 : -1;
-    int err = dx + dy;
+	int	mx;
+	int	my;
 
-    while (1)
-    {
-        if (x0 >= 0 && x0 < SCREEN_WIDTH && y0 >= 0 && y0 < SCREEN_HEIGHT)
-            put_pixel(game, x0, y0, color);
-        if (x0 == x1 && y0 == y1)
-            break;
-        int e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; }
-        if (e2 <= dx) { err += dx; y0 += sy; }
-    }
+	my = 0;
+	while (my < game->config->map.height)
+	{
+		mx = 0;
+		while (mx < game->config->map.width)
+		{
+			if (game->config->map.grid[my][mx] == CH_WALL)
+				draw_tile(game, origin_x + mx * MM_TILE, origin_y + my
+					* MM_TILE, create_rgb(120, 120, 120));
+			else if (game->config->map.grid[my][mx] == CH_SPACE
+				|| game->config->map.grid[my][mx] == CH_VOID
+				|| game->config->map.grid[my][mx] == CH_N
+				|| game->config->map.grid[my][mx] == CH_S
+				|| game->config->map.grid[my][mx] == CH_E
+				|| game->config->map.grid[my][mx] == CH_W)
+				draw_tile(game, origin_x + mx * MM_TILE, origin_y + my
+					* MM_TILE, create_rgb(30, 30, 30));
+			mx++;
+		}
+		my++;
+	}
 }
 
-void    render_minimap(t_game *game)
+static void	draw_direction_line(t_game *game, int x0, int y0)
 {
-    int mx, my;
-    int color_wall = create_rgb(120, 120, 120);
-    int color_floor = create_rgb(30, 30, 30);
-    int color_player = create_rgb(220, 30, 30);
-    int origin_x = MM_PADDING;
-    int origin_y = MM_PADDING;
+	int	i;
+	int	len;
+	int	xx;
+	int	yy;
 
-    if (!game || !game->config || !game->config->map.grid)
-        return;
-
-    for (my = 0; my < game->config->map.height; my++)
-    {
-        for (mx = 0; mx < game->config->map.width; mx++)
-        {
-            int tile_x = origin_x + mx * MM_TILE;
-            int tile_y = origin_y + my * MM_TILE;
-            char cell = game->config->map.grid[my][mx];
-            if (cell == CH_WALL)
-                draw_rect(game, tile_x, tile_y, MM_TILE, MM_TILE, color_wall);
-            else if (cell == CH_SPACE || cell == CH_VOID || cell == CH_N || cell == CH_S || cell == CH_E || cell == CH_W)
-                draw_rect(game, tile_x, tile_y, MM_TILE, MM_TILE, color_floor);
-        }
-    }
-
-    /* Player marker */
-    {
-        double px = game->player_x / (double)TILE_SIZE;
-        double py = game->player_y / (double)TILE_SIZE;
-        int pxx = origin_x + (int)(px * MM_TILE);
-        int pyy = origin_y + (int)(py * MM_TILE);
-        draw_rect(game, pxx - 2, pyy - 2, 4, 4, color_player);
-
-        /* Direction line */
-        int len = MM_TILE * 2;
-        int dx = pxx + (int)(cos(game->player_angle) * len);
-        int dy = pyy + (int)(sin(game->player_angle) * len);
-        draw_line(game, pxx, pyy, dx, dy, color_player);
-    }
+	i = 0;
+	len = MM_TILE * 2;
+	while (i <= len)
+	{
+		xx = x0 + (int)(cos(game->player_angle) * i);
+		yy = y0 + (int)(sin(game->player_angle) * i);
+		if (xx >= 0 && xx < SCREEN_WIDTH && yy >= 0 && yy < SCREEN_HEIGHT)
+			put_pixel(game, xx, yy, create_rgb(220, 30, 30));
+		i++;
+	}
 }
 
+static void	draw_player_marker(t_game *game, int origin_x, int origin_y)
+{
+	int	pxx;
+	int	pyy;
+	int	k;
+
+	pxx = origin_x + (int)((game->player_x / (double)TILE_SIZE) * MM_TILE);
+	pyy = origin_y + (int)((game->player_y / (double)TILE_SIZE) * MM_TILE);
+	k = 0;
+	while (k < 16)
+	{
+		if (pxx - 2 + (k % 4) >= 0 && pxx - 2 + (k % 4) < SCREEN_WIDTH && pyy
+			- 2 + (k / 4) >= 0 && pyy - 2 + (k / 4) < SCREEN_HEIGHT)
+			put_pixel(game, pxx - 2 + (k % 4), pyy - 2 + (k / 4),
+				create_rgb(220, 30, 30));
+		k++;
+	}
+	draw_direction_line(game, pxx, pyy);
+}
+
+void	render_minimap(t_game *game)
+{
+	int	origin_x;
+	int	origin_y;
+
+	if (!game || !game->config || !game->config->map.grid)
+		return ;
+	origin_x = MM_PADDING;
+	origin_y = MM_PADDING;
+	draw_minimap_tiles(game, origin_x, origin_y);
+	draw_player_marker(game, origin_x, origin_y);
+}

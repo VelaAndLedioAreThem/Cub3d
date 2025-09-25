@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vszpiech <vszpiech@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/09/11 16:37:16 by vszpiech           ###   ########.fr       */
+/*   Updated: 2025/09/11 16:37:16 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,24 @@
 # include <math.h>
 
 /* Temporary MLX function declarations for compilation */
-void	*mlx_init();
+void	*mlx_init(void);
 void	*mlx_new_window(void *mlx_ptr, int size_x, int size_y, char *title);
 void	*mlx_new_image(void *mlx_ptr, int width, int height);
-char	*mlx_get_data_addr(void *img_ptr, int *bits_per_pixel, int *size_line, int *endian);
-int		mlx_put_image_to_window(void *mlx_ptr, void *win_ptr, void *img_ptr, int x, int y);
-void	*mlx_xpm_file_to_image(void *mlx_ptr, char *filename, int *width, int *height);
+char	*mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
+			int *size_line, int *endian);
+int		mlx_put_image_to_window(void *mlx_ptr, void *win_ptr,
+			void *img_ptr, int x, int y);
+void	*mlx_xpm_file_to_image(void *mlx_ptr, char *filename,
+			int *width, int *height);
 int		mlx_loop(void *mlx_ptr);
-int		mlx_hook(void *win_ptr, int x_event, int x_mask, int (*funct)(), void *param);
+int		mlx_hook(void *win_ptr, int x_event, int x_mask,
+			int (*funct)(), void *param);
 int		mlx_loop_hook(void *mlx_ptr, int (*funct)(), void *param);
 int		mlx_destroy_image(void *mlx_ptr, void *img_ptr);
 int		mlx_destroy_window(void *mlx_ptr, void *win_ptr);
 int		mlx_destroy_display(void *mlx_ptr);
-int		mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y, int color, char *string);
+int		mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y,
+			int color, char *string);
 int		mlx_mouse_get_pos(void *mlx_ptr, void *win_ptr, int *x, int *y);
 int		mlx_mouse_move(void *mlx_ptr, void *win_ptr, int x, int y);
 int		mlx_mouse_hide(void *mlx_ptr, void *win_ptr);
@@ -43,7 +48,7 @@ int		mlx_mouse_show(void *mlx_ptr, void *win_ptr);
 /* ---- Math constants ---- */
 # define PI 3.14159265359
 # define TWO_PI 6.28318530718
-# define FOV_ANGLE (60 * (PI / 180))
+# define FOV_ANGLE 1.04719755
 
 /* ---- Ray configuration ---- */
 # define NUM_RAYS SCREEN_WIDTH
@@ -111,12 +116,9 @@ typedef struct s_game
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-	
 	t_config	*config;
 	t_ray		rays[NUM_RAYS];
-	
 	t_texture	textures[TEX_COUNT];
-	
 	int			game_running;
 	int			frame_count;
 
@@ -124,21 +126,20 @@ typedef struct s_game
 	int			walk_direction;
 	int			side_direction;
 
-	/* Per-key input state to reliably combine inputs */
-	struct {
-		int w;
-		int a;
-		int s;
-		int d;
-		int left;
-		int right;
-		int shift;
-		int ctrl;
-		} input;
-		/* Player continuous state (pixels + radians) */
-		double			player_x;
-		double			player_y;
-		double			player_angle;
+	struct s_input
+	{
+		int	w;
+		int	a;
+		int	s;
+		int	d;
+		int	left;
+		int	right;
+		int	shift;
+		int	ctrl;
+	}				input;
+	double			player_x;
+	double			player_y;
+	double			player_angle;
 
 	/* Bonus/UI state */
 	int			show_minimap;
@@ -150,9 +151,6 @@ typedef struct s_game
 	double		mouse_sensitivity;
 	int			last_mouse_x;
 	int			last_mouse_inited;
-
-
-
 }	t_game;
 
 /* ---- Main execution functions ---- */
@@ -171,6 +169,8 @@ void	cast_all_rays(t_game *game);
 void	cast_ray(t_game *game, double ray_angle, int strip_id);
 double	normalize_angle(double angle);
 double	distance_between_points(double x1, double y1, double x2, double y2);
+void	cast_horizontal(t_game *game, double ray_angle, t_ray *ray);
+void	cast_vertical(t_game *game, double ray_angle, t_ray *ray);
 
 /* ---- Rendering functions ---- */
 void	render_background(t_game *game);
@@ -183,6 +183,8 @@ void	render_hud(t_game *game);
 /* ---- Texture functions ---- */
 void	load_textures(t_game *game);
 int		get_texture_color(t_texture *texture, int x, int y);
+t_texture	*select_wall_texture(t_game *game, t_ray *ray);
+int			calculate_texture_x(t_ray *ray, t_texture *texture);
 
 /* ---- Utility functions ---- */
 int		is_wall(t_game *game, double x, double y);
@@ -194,10 +196,13 @@ int		create_rgb(int r, int g, int b);
 int		handle_keypress(int keycode, t_game *game);
 int		handle_keyrelease(int keycode, t_game *game);
 void	toggle_fullscreen(t_game *game);
+void	apply_keypress(int keycode, t_game *game);
+void	apply_keyrelease(int keycode, t_game *game);
 
 /* ---- Cleanup ---- */
 int		cleanup_and_exit(t_game *game);
 void	free_game_data(t_game *game);
+void	init_game_struct(t_game *game);
 
 /* ---- Test functions ---- */
 void	create_test_config(t_config *config);

@@ -29,16 +29,28 @@ SRCS = \
 	   $(PARSING_DIR)/parse_identifiers.c $(PARSING_DIR)/parse_map.c $(PARSING_DIR)/parse_textures.c \
 	   $(PARSING_DIR)/parse_identifiers_utils_1.c \
 	   $(PARSING_DIR)/parse_utils.c $(PARSING_DIR)/parse_identifiers_utils.c $(PARSING_DIR)/map_validate_utils.c\
-	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c $(EXECUTION_DIR)/rendering.c \
+	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c \
+	   $(EXECUTION_DIR)/ray_math.c $(EXECUTION_DIR)/raycast_h.c $(EXECUTION_DIR)/raycast_v.c \
+	   $(EXECUTION_DIR)/render_background.c $(EXECUTION_DIR)/render_walls.c $(EXECUTION_DIR)/texture.c \
 	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c $(EXECUTION_DIR)/utils.c \
 	   $(EXECUTION_DIR)/minimap.c $(EXECUTION_DIR)/hud.c \
+	   $(EXECUTION_DIR)/mouse.c $(EXECUTION_DIR)/keys.c \
+	   $(EXECUTION_DIR)/init.c \
+	   $(EXECUTION_DIR)/hooks.c $(EXECUTION_DIR)/game_loop.c $(EXECUTION_DIR)/fullscreen.c \
+	   $(EXECUTION_DIR)/cleanup.c \
 
 TEST_SRCS = \
 	   $(SCR_DIR)/test_main.c \
 	   $(PARSING_DIR)/init_config.c \
-	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c $(EXECUTION_DIR)/rendering.c \
+	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c \
+	   $(EXECUTION_DIR)/ray_math.c $(EXECUTION_DIR)/raycast_h.c $(EXECUTION_DIR)/raycast_v.c \
+	   $(EXECUTION_DIR)/render_background.c $(EXECUTION_DIR)/render_walls.c $(EXECUTION_DIR)/texture.c \
 	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c $(EXECUTION_DIR)/utils.c \
 	   $(EXECUTION_DIR)/minimap.c $(EXECUTION_DIR)/hud.c \
+	   $(EXECUTION_DIR)/mouse.c $(EXECUTION_DIR)/keys.c \
+	   $(EXECUTION_DIR)/init.c \
+	   $(EXECUTION_DIR)/hooks.c $(EXECUTION_DIR)/game_loop.c $(EXECUTION_DIR)/fullscreen.c \
+	   $(EXECUTION_DIR)/cleanup.c \
 	   $(EXECUTION_DIR)/test_setup.c \
 
 OBJS = $(SRCS:.c=.o)

@@ -16,9 +16,7 @@ void	create_test_map(t_config *config)
 {
 	config->map.height = 10;
 	config->map.width = 15;
-	
 	config->map.grid = malloc(sizeof(char *) * config->map.height);
-	
 	config->map.grid[0] = ft_strdup("111111111111111");
 	config->map.grid[1] = ft_strdup("100000000000001");
 	config->map.grid[2] = ft_strdup("100000000000001");
@@ -45,7 +43,6 @@ void	setup_test_colors(t_config *config)
 	config->floor.g = 64;
 	config->floor.b = 64;
 	config->floor.value = create_rgb(64, 64, 64);
-	
 	config->ceil.r = 128;
 	config->ceil.g = 128;
 	config->ceil.b = 128;
