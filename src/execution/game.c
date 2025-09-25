@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vszpiech < vszpiech@student.42wolfsburg.d  +#+  +:+       +#+        */
+/*   By: vela <vela@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/09/11 10:00:00 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:58:17 by vela             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ void	init_game(t_game *game, t_config *config)
 	game->show_minimap = 1;
 	game->show_crosshair = 1;
 	game->show_hud = 1;
+
+	/* Mouse look defaults */
+	game->mouse_enabled = 1;
+	game->mouse_sensitivity = 0.0025; /* radians per pixel */
+	game->last_mouse_x = SCREEN_WIDTH / 2;
+	game->last_mouse_inited = 0;
 	
 	for (i = 0; i < NUM_RAYS; i++)
 	{
@@ -98,12 +104,23 @@ void	init_game(t_game *game, t_config *config)
 		config->ceil.value = create_rgb(config->ceil.r, config->ceil.g, config->ceil.b);
 	else
 		config->ceil.value = 0x808080;
+
+	/* Prepare mouse look: hide cursor and center it */
+	if (game->mouse_enabled)
+	{
+		mlx_mouse_hide(game->mlx, game->window);
+		mlx_mouse_move(game->mlx, game->window, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		game->last_mouse_x = SCREEN_WIDTH / 2;
+		game->last_mouse_inited = 1;
+	}
 }
 
 void	setup_hooks(t_game *game)
 {
     mlx_hook(game->window, 2, 1L<<0, handle_keypress, game);
     mlx_hook(game->window, 3, 1L<<1, handle_keyrelease, game);
+    /* Mouse motion event */
+    mlx_hook(game->window, 6, 1L<<6, handle_mousemove, game);
     mlx_hook(game->window, 17, 1L<<17, cleanup_and_exit, game);
     mlx_loop_hook(game->mlx, game_loop, game);
 }
@@ -169,6 +186,7 @@ int	game_loop(void *param)
 	if (!game->game_running)
 		return (0);
 	
+	/* Mouse rotation is event-driven; no per-frame query needed */
 	update_game(game);
 	render_game(game);
 	
@@ -193,6 +211,8 @@ int	game_loop(void *param)
 int	cleanup_and_exit(t_game *game)
 {
 	/* Unified cleanup in one place to avoid double-destroys */
+	if (game && game->mlx && game->window)
+		mlx_mouse_show(game->mlx, game->window);
 	free_game_data(game);
 	exit(0);
 	return (0);

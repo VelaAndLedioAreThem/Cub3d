@@ -30,6 +30,10 @@ int		mlx_destroy_image(void *mlx_ptr, void *img_ptr);
 int		mlx_destroy_window(void *mlx_ptr, void *win_ptr);
 int		mlx_destroy_display(void *mlx_ptr);
 int		mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y, int color, char *string);
+int		mlx_mouse_get_pos(void *mlx_ptr, void *win_ptr, int *x, int *y);
+int		mlx_mouse_move(void *mlx_ptr, void *win_ptr, int x, int y);
+int		mlx_mouse_hide(void *mlx_ptr, void *win_ptr);
+int		mlx_mouse_show(void *mlx_ptr, void *win_ptr);
 
 /* ---- Screen and rendering constants ---- */
 # define SCREEN_WIDTH 1920
@@ -141,6 +145,12 @@ typedef struct s_game
 	int			show_crosshair;
 	int			show_hud;
 
+	/* Mouse look state */
+	int			mouse_enabled;
+	double		mouse_sensitivity;
+	int			last_mouse_x;
+	int			last_mouse_inited;
+
 
 
 }	t_game;
@@ -191,5 +201,9 @@ void	free_game_data(t_game *game);
 
 /* ---- Test functions ---- */
 void	create_test_config(t_config *config);
+
+/* ---- Mouse handling ---- */
+void	handle_mouse_look(t_game *game);
+int		handle_mousemove(int x, int y, t_game *game);
 
 #endif
