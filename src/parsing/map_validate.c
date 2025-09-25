@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 21:25:26 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 16:27:53 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:06:03 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,8 @@ int	fill_row_chars(t_row_map *row)
 	while (x < (int)len)
 	{
 		ch = (unsigned char)row->src[x];
-                if (!is_map_char(ch))
-                {
-                        perr(P_EFMT, "invalid map character");
-                        return (-1);
-                }
+		if (!is_map_char(ch))
+			return (perr(P_EFMT, "invalid map character"), -1);
 		if (ch == 'N' || ch == 'S' || ch == 'E' || ch == 'W')
 		{
 			row->player->x = x + 0.5;
