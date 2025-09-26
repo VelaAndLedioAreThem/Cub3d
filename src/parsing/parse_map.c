@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 21:22:01 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/24 22:31:16 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/26 14:03:50 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	parse_map(char **lines, int n, t_map *map, t_player *player)
 	int				row_count;
 
 	if (!lines || n <= 0 || !map || !player)
-		return (-1);
+		return (perr(P_EMAP, "missing map"));
 	*map = (t_map){NULL, 0, 0};
 	*player = (t_player){0.0, 0.0, 0};
 	p_map.start = map_skip_blank_start(lines, n);
