@@ -27,7 +27,6 @@ int	main(int ac, char **av)
 	init_game(&game, &cfg);
 	setup_hooks(&game);
 	mlx_loop(game.mlx);
-	
 	destroy_configs(&cfg);
 	return (0);
 }

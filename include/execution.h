@@ -153,6 +153,18 @@ typedef struct s_game
 	int			last_mouse_inited;
 }	t_game;
 
+/* ---- Internal rendering context (wall column) ---- */
+struct s_draw_ctx
+{
+	t_game		*game;
+	t_texture	*tex;
+	int		x;
+	int		top;
+	int		bot;
+	int		tex_x;
+	int		line_height;
+};
+
 /* ---- Main execution functions ---- */
 int		game_loop(void *param);
 void	update_game(t_game *game);
