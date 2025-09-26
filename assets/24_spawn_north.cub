@@ -1,7 +1,7 @@
-NO ./assets/no.xpm
-SO ./assets/so.xpm
-WE ./assets/we.xpm
-EA ./assets/ea.xpm
+NO ./textures/no.xpm
+SO ./textures/so.xpm
+WE ./textures/we.xpm
+EA ./textures/ea.xpm
 F 0,0,0
 C 180,180,220
 
