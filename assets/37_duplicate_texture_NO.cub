@@ -1,8 +1,7 @@
-NO ./textures/no.xpm
-NO ./textures/no.xpm
-SO ./textures/so.xpm
-WE ./textures/we.xpm
-EA ./textures/ea.xpm
+NO ./textures/north.xpm
+SO ./textures/south.xpm
+WE ./textures/west.xpm
+EA ./textures/east.xpm
 F 90,90,90
 C 150,150,200
 

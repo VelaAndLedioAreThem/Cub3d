@@ -6,7 +6,7 @@
 /*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 21:22:01 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/26 14:03:50 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/09/26 15:43:12 by ldurmish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	parse_map(char **lines, int n, t_map *map, t_player *player)
 	map->height = p_map.end - p_map.start;
 	if (map->height <= 0 || map->width <= 0)
 		return (-1);
+	if (map->width > 1920 || map->height > 1080)
+		return (perr(P_EFMT, ("map exceeds screen dimensions")));
 	if (map_alloc_grid(map) != 0)
 		return (-1);
 	row_count = map_fill_grid(lines, &p_map, map, player);
