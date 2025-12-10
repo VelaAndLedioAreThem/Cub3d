@@ -6,7 +6,7 @@
 /*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/12/10 13:29:26 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:00:34 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,17 +133,16 @@ typedef struct s_game
 	int			last_mouse_inited;
 }	t_game;
 
-<<<<<<< HEAD
 /* ---- Internal rendering context (wall column) ---- */
 struct s_draw_ctx
 {
 	t_game		*game;
 	t_texture	*tex;
-	int			x;
-	int			top;
-	int			bot;
-	int			tex_x;
-	int			line_height;
+	int		x;
+	int		top;
+	int		bot;
+	int		tex_x;
+	int		line_height;
 };
 
 =======
