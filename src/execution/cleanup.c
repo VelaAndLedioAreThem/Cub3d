@@ -14,8 +14,12 @@
 
 int	cleanup_and_exit(t_game *game)
 {
+	if (game && game->mlx && game->window && game->is_fullscreen)
+		toggle_fullscreen(game);
 	if (game && game->mlx && game->window)
 		mlx_mouse_show(game->mlx, game->window);
+	if (game && game->config)
+		destroy_configs(game->config);
 	free_game_data(game);
 	exit(0);
 	return (0);

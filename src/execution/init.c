@@ -75,6 +75,7 @@ void	init_game_struct(t_game *game)
 	game->side_direction = 0;
 	init_rays(game);
 	init_textures_arr(game);
+	game->is_fullscreen = 0;
 }
 
 /**

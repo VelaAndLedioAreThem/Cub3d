@@ -6,7 +6,7 @@
 /*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/09/11 16:37:16 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/12/10 12:57:52 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		mlx_mouse_get_pos(void *mlx_ptr, void *win_ptr, int *x, int *y);
 int		mlx_mouse_move(void *mlx_ptr, void *win_ptr, int x, int y);
 int		mlx_mouse_hide(void *mlx_ptr, void *win_ptr);
 int		mlx_mouse_show(void *mlx_ptr, void *win_ptr);
+int		mlx_fullscreen(void *mlx_ptr, void *win_ptr, int fullscreen);
 
 /* ---- Screen and rendering constants ---- */
 # define SCREEN_WIDTH 1920
@@ -145,6 +146,7 @@ typedef struct s_game
 	int			show_minimap;
 	int			show_crosshair;
 	int			show_hud;
+	int			is_fullscreen;
 
 	/* Mouse look state */
 	int			mouse_enabled;
@@ -208,6 +210,7 @@ int		create_rgb(int r, int g, int b);
 int		handle_keypress(int keycode, t_game *game);
 int		handle_keyrelease(int keycode, t_game *game);
 void	toggle_fullscreen(t_game *game);
+void	init_fullscreen(t_game *game);
 void	apply_keypress(int keycode, t_game *game);
 void	apply_keyrelease(int keycode, t_game *game);
 

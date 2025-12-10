@@ -4,7 +4,7 @@
 NAME = cub3d
 TEST_NAME = cub3d_test
 CC = cc
-CFLAGS = -Wall -g -Wextra -Werror -Iinclude -Ilib/libft/include -Ilib/mlx -Ilib/libft/gnl/include
+CFLAGS = -Wall -g -Wextra -Werror -O2 -Iinclude -Ilib/libft/include -Ilib/mlx -Ilib/libft/gnl/include
 
 # Minimal, readable build output
 .SILENT:
@@ -62,7 +62,7 @@ TEST_OBJS = $(TEST_SRCS:.c=.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_DIR)/libmlx.a
 
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lXrandr -lm
 
 # ----------
 #  Rules

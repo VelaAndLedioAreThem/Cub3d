@@ -98,5 +98,9 @@ void	free_game_data(t_game *game)
 	if (game->window)
 		mlx_destroy_window(game->mlx, game->window);
 	if (game->mlx)
+	{
 		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+		game->mlx = NULL;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validate_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldurmish < ldurmish@student.42wolfsburg.d  +#+  +:+       +#+        */
+/*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:32:32 by ldurmish          #+#    #+#             */
-/*   Updated: 2025/09/22 16:11:32 by ldurmish         ###   ########.fr       */
+/*   Updated: 2025/12/09 23:26:37 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -97,6 +97,7 @@ void	init_game(t_game *game, t_config *config)
 		return ;
 	init_world_and_colors(game, config);
 	init_mouse(game);
+	init_fullscreen(game);
 }
 
 /* moved to cleanup.c */
