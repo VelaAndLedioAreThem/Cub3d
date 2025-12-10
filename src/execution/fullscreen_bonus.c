@@ -12,24 +12,16 @@
 
 #include "../../include/execution.h"
 
-static void	set_fullscreen_state(t_game *game, int enable)
-{
-	if (!game || !game->mlx || !game->window)
-		return ;
-	if (mlx_fullscreen(game->mlx, game->window, enable))
-		game->is_fullscreen = enable;
-}
-
 void	toggle_fullscreen(t_game *game)
 {
 	if (!game)
 		return ;
-	set_fullscreen_state(game, !game->is_fullscreen);
+	game->is_fullscreen = !game->is_fullscreen;
 }
 
 void	init_fullscreen(t_game *game)
 {
 	if (!game)
 		return ;
-	set_fullscreen_state(game, 1);
+	game->is_fullscreen = 0;
 }

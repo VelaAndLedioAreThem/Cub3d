@@ -94,21 +94,23 @@ int	parse_map(char **lines, int n, t_map *map, t_player *player)
 	t_parse_map		p_map;
 	int				row_count;
 
-	if (!lines || n <= 0 || !map || !player)
-		return (-1);
+	if (!map || !player)
+		return (perr(P_EARG, "parse_map: bad args"));
+	if (!lines || n <= 0)
+		return (perr(P_EMISS, "missing map section"));
 	*map = (t_map){NULL, 0, 0};
 	*player = (t_player){0.0, 0.0, 0};
 	p_map.start = map_skip_blank_start(lines, n);
 	if (p_map.start >= n)
-		return (-1);
+		return (perr(P_EMISS, "missing map section"));
 	map_detect_bounds(lines, n, &p_map, &map->width);
 	map->height = p_map.end - p_map.start;
 	if (map->height <= 0 || map->width <= 0)
-		return (-1);
+		return (perr(P_EFMT, "invalid map size"));
 	if (map_alloc_grid(map) != 0)
-		return (-1);
+		return (perr(P_EINVAL, "failed to allocate map grid"));
 	row_count = map_fill_grid(lines, &p_map, map, player);
 	if (row_count != 0)
-		return (-1);
+		return (row_count);
 	return (0);
 }

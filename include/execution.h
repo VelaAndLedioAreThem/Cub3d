@@ -6,7 +6,7 @@
 /*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/12/10 16:00:34 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:31:51 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,7 @@ struct s_draw_ctx
 	int		line_height;
 };
 
-=======
->>>>>>> parent of 540a5ca (full src folder norm conform)
+
 /* ---- Main execution functions ---- */
 int			game_loop(void *param);
 void		update_game(t_game *game);
@@ -189,10 +188,10 @@ int			create_rgb(int r, int g, int b);
 /* ---- Input handling ---- */
 int			handle_keypress(int keycode, t_game *game);
 int			handle_keyrelease(int keycode, t_game *game);
-void		toggle_fullscreen(t_game *game);
-void		init_fullscreen(t_game *game);
 void		apply_keypress(int keycode, t_game *game);
 void		apply_keyrelease(int keycode, t_game *game);
+void		toggle_fullscreen(t_game *game);
+void		init_fullscreen(t_game *game);
 
 /* ---- Cleanup ---- */
 int			cleanup_and_exit(t_game *game);
