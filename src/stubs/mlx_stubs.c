@@ -7,7 +7,7 @@
 	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/09/11 16:37:16 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:37:16 by vszpiech           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,71 @@ char	*mlx_get_data_addr(void *img_ptr, int *bits_per_pixel, int *size_line,
 	return (dummy_buffer);
 }
 
-int	mlx_put_image_to_window(void *mlx_ptr, void *win_ptr,
-				void *img_ptr, ...)
+int	mlx_put_image_to_window(void *mlx_ptr, void *win_ptr, void *img_ptr, int x,
+		int y)
 {
 	(void)mlx_ptr;
 	(void)win_ptr;
 	(void)img_ptr;
+	(void)x;
+	(void)y;
+	return (0);
+}
+
+void	*mlx_xpm_file_to_image(void *mlx_ptr, char *filename, int *width,
+		int *height)
+{
+	(void)mlx_ptr;
+	(void)filename;
+	*width = 64;
+	*height = 64;
+	return ((void *)1);
+}
+
+int	mlx_loop(void *mlx_ptr)
+{
+	(void)mlx_ptr;
+	// In a real implementation, this would start the event loop
+	// For stub purposes,
+	// we just return (ft_printf("MLX loop started (stub implementation)\n"));
+	return (0);
+}
+
+int	mlx_hook(void *win_ptr, int x_event, int x_mask, int (*funct)(),
+		void *param)
+{
+	(void)win_ptr;
+	(void)x_event;
+	(void)x_mask;
+	(void)funct;
+	(void)param;
+	return (0);
+}
+
+int	mlx_loop_hook(void *mlx_ptr, int (*funct)(), void *param)
+{
+	(void)mlx_ptr;
+	(void)funct;
+	(void)param;
+	return (0);
+}
+
+int	mlx_destroy_image(void *mlx_ptr, void *img_ptr)
+{
+	(void)mlx_ptr;
+	(void)img_ptr;
+	return (0);
+}
+
+int	mlx_destroy_window(void *mlx_ptr, void *win_ptr)
+{
+	(void)mlx_ptr;
+	(void)win_ptr;
+	return (0);
+}
+
+int	mlx_destroy_display(void *mlx_ptr)
+{
+	(void)mlx_ptr;
 	return (0);
 }

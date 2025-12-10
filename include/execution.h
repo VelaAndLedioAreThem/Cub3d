@@ -133,6 +133,7 @@ typedef struct s_game
 	int			last_mouse_inited;
 }	t_game;
 
+<<<<<<< HEAD
 /* ---- Internal rendering context (wall column) ---- */
 struct s_draw_ctx
 {
@@ -145,6 +146,8 @@ struct s_draw_ctx
 	int			line_height;
 };
 
+=======
+>>>>>>> parent of 540a5ca (full src folder norm conform)
 /* ---- Main execution functions ---- */
 int			game_loop(void *param);
 void		update_game(t_game *game);

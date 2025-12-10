@@ -22,6 +22,7 @@ int	main(int ac, char **av)
 	init_configs(&cfg);
 	if (ac != 2)
 		return (perr(P_EARG, "Usage: ./cub3d <file.cub>"));
+<<<<<<< HEAD
 	if (parse_config(av[1], &cfg) != 0)
 		return (destroy_configs(&cfg), 1);
 	init_game(&game, &cfg);
@@ -29,3 +30,14 @@ int	main(int ac, char **av)
 	mlx_loop(game.mlx);
 	return (cleanup_and_exit(&game));
 }
+=======
+	if (parse_config(av[1], &cfg) != 0)
+		return (destroy_configs(&cfg), 1);
+	init_game(&game, &cfg);
+	setup_hooks(&game);
+	mlx_loop(game.mlx);
+	
+	destroy_configs(&cfg);
+	return (0);
+}
+>>>>>>> parent of 540a5ca (full src folder norm conform)
