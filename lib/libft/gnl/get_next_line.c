@@ -120,8 +120,8 @@ char	*ft_get_line_from_list(t_list_gnl **head, t_list_gnl *current)
 char	*get_next_line(int fd)
 {
 	static t_list_gnl	*head = NULL;
-	char			*line;
-	int				read_status;
+	char				*line;
+	int					read_status;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
 	{

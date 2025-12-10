@@ -22,7 +22,7 @@ MLX_DIR := lib/mlx
 # ---------------
 #  Source files
 #  -------------
-SRCS = \
+SRCS_COMMON = \
 	   $(SCR_DIR)/main.c \
 	   $(PARSING_DIR)/init_config.c $(PARSING_DIR)/parse_config.c $(PARSING_DIR)/errors.c \
 	   $(PARSING_DIR)/files_utils.c $(PARSING_DIR)/parse_colors.c $(PARSING_DIR)/map_validate.c \
@@ -31,13 +31,34 @@ SRCS = \
 	   $(PARSING_DIR)/parse_utils.c $(PARSING_DIR)/parse_identifiers_utils.c $(PARSING_DIR)/map_validate_utils.c\
 	   $(EXECUTION_DIR)/game.c $(EXECUTION_DIR)/raycasting.c \
 	   $(EXECUTION_DIR)/ray_math.c $(EXECUTION_DIR)/raycast_h.c $(EXECUTION_DIR)/raycast_v.c \
-	   $(EXECUTION_DIR)/render_background.c $(EXECUTION_DIR)/render_walls.c $(EXECUTION_DIR)/texture.c \
-	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c $(EXECUTION_DIR)/utils.c \
-	   $(EXECUTION_DIR)/minimap.c $(EXECUTION_DIR)/hud.c \
-	   $(EXECUTION_DIR)/mouse.c $(EXECUTION_DIR)/keys.c \
+	   $(EXECUTION_DIR)/render_background.c $(EXECUTION_DIR)/render_walls.c \
+	   $(EXECUTION_DIR)/texture.c \
+	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c \
+	   $(EXECUTION_DIR)/utils.c \
+	   $(EXECUTION_DIR)/keys.c \
 	   $(EXECUTION_DIR)/init.c \
-	   $(EXECUTION_DIR)/hooks.c $(EXECUTION_DIR)/game_loop.c $(EXECUTION_DIR)/fullscreen.c \
-	   $(EXECUTION_DIR)/cleanup.c \
+	   $(EXECUTION_DIR)/hooks.c $(EXECUTION_DIR)/game_loop.c \
+	   $(EXECUTION_DIR)/cleanup.c
+
+SRCS_MAND = \
+	   $(SRCS_COMMON) \
+	   $(EXECUTION_DIR)/minimap.c \
+	   $(EXECUTION_DIR)/hud.c \
+	   $(EXECUTION_DIR)/mouse.c \
+	   $(EXECUTION_DIR)/fullscreen.c
+
+SRCS_BONUS = \
+	   $(SRCS_COMMON) \
+	   $(EXECUTION_DIR)/minimap_bonus.c \
+	   $(EXECUTION_DIR)/hud_bonus.c \
+	   $(EXECUTION_DIR)/mouse_bonus.c \
+	   $(EXECUTION_DIR)/fullscreen_bonus.c
+
+ifeq ($(BONUS),1)
+SRCS = $(SRCS_BONUS)
+else
+SRCS = $(SRCS_MAND)
+endif
 
 TEST_SRCS = \
 	   $(SCR_DIR)/test_main.c \
@@ -69,6 +90,11 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lXrandr -lm
 #  ---------
 all: $(NAME)
 	printf "DONE\n"
+
+bonus:
+	$(MAKE) fclean
+	$(MAKE) BONUS=1 all
+	printf "DONE (bonus)\n"
 
 test: $(TEST_NAME)
 	printf "DONE (test)\n"

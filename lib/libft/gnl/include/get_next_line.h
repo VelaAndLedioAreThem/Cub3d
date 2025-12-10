@@ -25,12 +25,12 @@
 
 typedef struct s_list_gnl
 {
-	char			*data;
-	int				len;
+	int					len;
+	int					to_delete;
+	int					found_newline;
+	char				*data;
 	struct s_list_gnl	*next;
-	int				to_delete;
-	int				found_newline;
-}				t_list_gnl;
+}	t_list_gnl;
 
 typedef struct s_glfl
 {
@@ -39,7 +39,7 @@ typedef struct s_glfl
 	char			*new_line;
 	char			*part;
 	t_list_gnl		*temp;
-}			t_glfl;
+}	t_glfl;
 
 char							*get_next_line(int fd);
 void							ft_add_node(t_list_gnl **head, char *str);

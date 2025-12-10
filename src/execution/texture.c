@@ -25,21 +25,21 @@ int	get_texture_color(t_texture *texture, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-static t_texture	*wall_tex_vert(t_game *game, t_ray *ray)
+static t_tex	wall_tex_vert(t_game *game, t_ray *ray)
 {
 	if (ray->is_ray_facing_right)
 		return (&game->textures[TEX_WE]);
 	return (&game->textures[TEX_EA]);
 }
 
-static t_texture	*wall_tex_horiz(t_game *game, t_ray *ray)
+static t_tex	wall_tex_horiz(t_game *game, t_ray *ray)
 {
 	if (ray->is_ray_facing_down)
 		return (&game->textures[TEX_NO]);
 	return (&game->textures[TEX_SO]);
 }
 
-t_texture	*select_wall_texture(t_game *game, t_ray *ray)
+t_tex	select_wall_texture(t_game *game, t_ray *ray)
 {
 	if (ray->was_hit_vertical)
 		return (wall_tex_vert(game, ray));
