@@ -33,7 +33,7 @@ SRCS_COMMON = \
 	   $(EXECUTION_DIR)/ray_math.c $(EXECUTION_DIR)/raycast_h.c $(EXECUTION_DIR)/raycast_v.c \
 	   $(EXECUTION_DIR)/render_background.c $(EXECUTION_DIR)/render_walls.c \
 	   $(EXECUTION_DIR)/texture.c \
-	   $(EXECUTION_DIR)/player.c $(EXECUTION_DIR)/input.c \
+	   $(EXECUTION_DIR)/input.c \
 	   $(EXECUTION_DIR)/utils.c \
 	   $(EXECUTION_DIR)/keys.c \
 	   $(EXECUTION_DIR)/init.c \
@@ -42,6 +42,7 @@ SRCS_COMMON = \
 
 SRCS_MAND = \
 	   $(SRCS_COMMON) \
+	   $(EXECUTION_DIR)/player.c \
 	   $(EXECUTION_DIR)/minimap.c \
 	   $(EXECUTION_DIR)/hud.c \
 	   $(EXECUTION_DIR)/mouse.c \
@@ -49,6 +50,7 @@ SRCS_MAND = \
 
 SRCS_BONUS = \
 	   $(SRCS_COMMON) \
+	   $(EXECUTION_DIR)/player_bonus.c \
 	   $(EXECUTION_DIR)/minimap_bonus.c \
 	   $(EXECUTION_DIR)/hud_bonus.c \
 	   $(EXECUTION_DIR)/mouse_bonus.c \
@@ -58,6 +60,10 @@ ifeq ($(BONUS),1)
 SRCS = $(SRCS_BONUS)
 else
 SRCS = $(SRCS_MAND)
+endif
+
+ifeq ($(BONUS),1)
+CFLAGS += -DBONUS=1
 endif
 
 TEST_SRCS = \

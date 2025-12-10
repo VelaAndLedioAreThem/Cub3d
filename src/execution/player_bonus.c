@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.c                                           :+:      :+:    :+:   */
+/*   player_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vszpiech                                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/21 00:00:00 by vszpiech         #+#    #+#             */
-/*   Updated: 2025/09/21 00:00:00 by vszpiech        ###   ########.fr       */
+/*   Created: 2025/12/10 22:30:00 by vszpiech         #+#    #+#             */
+/*   Updated: 2025/12/10 22:30:00 by vszpiech        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ static double	compute_speed(t_game *game)
 {
 	double	speed;
 
-	(void)game;
 	speed = MOVE_SPEED;
+	if (game->input.shift)
+		speed *= 1.8;
+	if (game->input.ctrl)
+		speed *= 0.5;
 	return (speed);
 }
 
