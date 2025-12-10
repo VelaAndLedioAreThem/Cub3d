@@ -28,15 +28,15 @@ int	get_texture_color(t_texture *texture, int x, int y)
 static t_tex	wall_tex_vert(t_game *game, t_ray *ray)
 {
 	if (ray->is_ray_facing_right)
-		return (&game->textures[TEX_WE]);
-	return (&game->textures[TEX_EA]);
+		return (&game->textures[TEX_EA]);
+	return (&game->textures[TEX_WE]);
 }
 
 static t_tex	wall_tex_horiz(t_game *game, t_ray *ray)
 {
 	if (ray->is_ray_facing_down)
-		return (&game->textures[TEX_NO]);
-	return (&game->textures[TEX_SO]);
+		return (&game->textures[TEX_SO]);
+	return (&game->textures[TEX_NO]);
 }
 
 t_tex	select_wall_texture(t_game *game, t_ray *ray)

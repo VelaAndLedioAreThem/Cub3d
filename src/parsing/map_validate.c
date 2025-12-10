@@ -99,7 +99,7 @@ int	fill_row_chars(t_row_map *row)
 		row->dst[x++] = (char)ch;
 	}
 	while (x < row->width)
-		row->dst[x++] = CH_WALL;
+		row->dst[x++] = CH_VOID;
 	row->dst[row->width] = '\0';
 	return (0);
 }

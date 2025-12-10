@@ -28,6 +28,7 @@ static int	read_component(const char **str, int *color)
 {
 	const char	*p;
 	int			val;
+	int			digits;
 
 	if (!str || !*str || !color)
 		return (perr(P_EARG, "read_component bad args"));
@@ -35,8 +36,12 @@ static int	read_component(const char **str, int *color)
 	if (!ft_isdigit((unsigned char)*p))
 		return (perr(P_EFMT, "expected color number"));
 	val = 0;
+	digits = 0;
 	while (*p && ft_isdigit((unsigned char)*p))
 	{
+		digits++;
+		if (digits > 3)
+			return (perr(P_EFMT, "color component too long"));
 		val = val * 10 + (*p - '0');
 		if (val < 0 || val > 255)
 			return (perr(P_EFMT, "color out of range"));
