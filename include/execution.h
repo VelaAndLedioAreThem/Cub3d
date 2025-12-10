@@ -6,7 +6,7 @@
 /*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/12/10 16:31:51 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/12/10 21:32:45 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,28 @@
 /* ---- Ray structure ---- */
 typedef struct s_ray
 {
-	double	angle;
-	double	wall_hit_x;
-	double	wall_hit_y;
-	double	distance;
-	int		was_hit_vertical;
-	int		is_ray_facing_up;
-	int		is_ray_facing_down;
-	int		is_ray_facing_left;
-	int		is_ray_facing_right;
-	int		hit_content;
+	double		angle;
+	double		wall_hit_x;
+	double		wall_hit_y;
+	double		distance;
+	int			was_hit_vertical;
+	int			is_ray_facing_up;
+	int			is_ray_facing_down;
+	int			is_ray_facing_left;
+	int			is_ray_facing_right;
+	int			hit_content;
 }	t_ray;
 
 /* ---- Texture structure ---- */
 typedef struct s_texture
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		width;
-	int		height;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	int			width;
+	int			height;
 }	t_texture;
 
 typedef t_texture	*t_tex;
@@ -88,63 +88,62 @@ typedef t_texture	*t_tex;
 /* ---- Game execution structure ---- */
 typedef struct s_game
 {
-	void		*mlx;
-	void		*window;
-	void		*img;
-	char		*img_addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
-	t_config	*config;
-	t_ray		rays[NUM_RAYS];
-	t_texture	textures[TEX_COUNT];
-	int			game_running;
-	int			frame_count;
+	void			*mlx;
+	void			*window;
+	void			*img;
+	char			*img_addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	t_config		*config;
+	t_ray			rays[NUM_RAYS];
+	t_texture		textures[TEX_COUNT];
+	int				game_running;
+	int				frame_count;
 
-	int			turn_direction;
-	int			walk_direction;
-	int			side_direction;
+	int				turn_direction;
+	int				walk_direction;
+	int				side_direction;
 
 	struct s_input
 	{
-		int		w;
-		int		a;
-		int		s;
-		int		d;
-		int		left;
-		int		right;
-		int		shift;
-		int		ctrl;
-	}			input;
-	double		player_x;
-	double		player_y;
-	double		player_angle;
+		int			w;
+		int			a;
+		int			s;
+		int			d;
+		int			left;
+		int			right;
+		int			shift;
+		int			ctrl;
+	}				input;
+	double			player_x;
+	double			player_y;
+	double			player_angle;
 
 	/* Bonus/UI state */
-	int			show_minimap;
-	int			show_crosshair;
-	int			show_hud;
-	int			is_fullscreen;
+	int				show_minimap;
+	int				show_crosshair;
+	int				show_hud;
+	int				is_fullscreen;
 
 	/* Mouse look state */
-	int			mouse_enabled;
-	double		mouse_sensitivity;
-	int			last_mouse_x;
-	int			last_mouse_inited;
+	int				mouse_enabled;
+	double			mouse_sensitivity;
+	int				last_mouse_x;
+	int				last_mouse_inited;
 }	t_game;
 
 /* ---- Internal rendering context (wall column) ---- */
 struct s_draw_ctx
 {
-	t_game		*game;
-	t_texture	*tex;
-	int		x;
-	int		top;
-	int		bot;
-	int		tex_x;
-	int		line_height;
+	t_game			*game;
+	t_texture		*tex;
+	int				x;
+	int				top;
+	int				bot;
+	int				tex_x;
+	int				line_height;
 };
-
 
 /* ---- Main execution functions ---- */
 int			game_loop(void *param);

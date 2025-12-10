@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hud_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vszpiech                                   +#+  +:+       +#+        */
+/*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 00:00:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/12/10 00:00:00 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/12/10 21:07:07 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	render_hud(t_game *game)
 {
 	int		y;
 
-	y = 20;
+	y = 150;
 	if (!game->show_hud)
 		return ;
 	put_labeled_int(game, &y, "PosX: ", (int) game->player_x);

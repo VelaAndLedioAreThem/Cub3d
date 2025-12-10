@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vszpiech                                   +#+  +:+       +#+        */
+/*   By: vszpiech <vszpiech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 23:47:00 by vszpiech          #+#    #+#             */
-/*   Updated: 2025/09/25 23:47:00 by vszpiech         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:40:36 by vszpiech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,52 +34,46 @@ static void	wall_bounds(int height, int *top, int *bot)
 		*bot = SCREEN_HEIGHT - 1;
 }
 
-static void	draw_column_params(t_game *game, int x, t_texture *tex,
-                        int top, int bot, int tex_x, int line_height)
+static void	draw_column_params(struct s_draw_ctx *ctx)
 {
-    double  step;
-    double  tex_pos;
-    int     y;
-    int     tex_y;
+	double	step;
+	double	tex_pos;
+	int		y;
+	int		tex_y;
 
-    /*
-     * Use the unclipped wall height for vertical stepping to avoid texture
-     * distortion when the wall is taller than the screen. Start the texture
-     * at the correct offset if the top got clipped.
-     */
-    step = (double)tex->height / (double)line_height;
-    tex_pos = ((double)top - ((double)SCREEN_HEIGHT / 2.0 - (double)line_height / 2.0)) * step;
-    y = top;
-    while (y <= bot)
-    {
-        tex_y = (int)tex_pos;
-        if (tex_y < 0)
-            tex_y = 0;
-        if (tex_y >= tex->height)
-            tex_y = tex->height - 1;
-        put_pixel(game, x, y, get_texture_color(tex, tex_x, tex_y));
-        tex_pos += step;
-        y++;
-    }
+	step = (double)ctx->tex->height / (double)ctx->line_height;
+	tex_pos = ((double)ctx->top - ((double)SCREEN_HEIGHT / 2.0
+				- (double)ctx->line_height / 2.0)) * step;
+	y = ctx->top;
+	while (y <= ctx->bot)
+	{
+		tex_y = (int)tex_pos;
+		if (tex_y < 0)
+			tex_y = 0;
+		if (tex_y >= ctx->tex->height)
+			tex_y = ctx->tex->height - 1;
+		put_pixel(ctx->game, ctx->x, y,
+			get_texture_color(ctx->tex, ctx->tex_x, tex_y));
+		tex_pos += step;
+		y++;
+	}
 }
 
 void	render_wall_strip(t_game *game, int strip_id)
 {
-    int         top;
-    int         bot;
-    int         height;
-    int         tex_x;
-    t_texture   *tex;
-    t_ray       *ray;
+	struct s_draw_ctx	ctx;
+	t_ray				*ray;
 
-    ray = &game->rays[strip_id];
-    height = corrected_height(game, ray);
-    wall_bounds(height, &top, &bot);
-    tex = select_wall_texture(game, ray);
-    if (!tex || !tex->addr)
-        return ;
-    tex_x = calculate_texture_x(ray, tex);
-    draw_column_params(game, strip_id, tex, top, bot, tex_x, height);
+	ray = &game->rays[strip_id];
+	ctx.game = game;
+	ctx.x = strip_id;
+	ctx.line_height = corrected_height(game, ray);
+	wall_bounds(ctx.line_height, &ctx.top, &ctx.bot);
+	ctx.tex = select_wall_texture(game, ray);
+	if (!ctx.tex || !ctx.tex->addr)
+		return ;
+	ctx.tex_x = calculate_texture_x(ray, ctx.tex);
+	draw_column_params(&ctx);
 }
 
 void	render_walls(t_game *game)
